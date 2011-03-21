@@ -1,2 +1,2 @@
 INCLUDEPATH += ../PlayerInfo
-LIBS += -L$$(PWD)/build/lib/playerinfo -lplayerinfo
+LIBS += -L../build/lib/playerinfo -lplayerinfo

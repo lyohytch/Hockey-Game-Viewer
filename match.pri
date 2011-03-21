@@ -1,3 +1,3 @@
 INCLUDEPATH += ../CommandInfo \
                ../PlayerInfo
-LIBS += -L$$(PWD)/build/lib/commandinfo -lcommandinfo
+LIBS += -L../build/lib/commandinfo -lcommandinfo

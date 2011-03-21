@@ -1,0 +1,2 @@
+INCLUDEPATH += ../IDownload \
+               ../IParser

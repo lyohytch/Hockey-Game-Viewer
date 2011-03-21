@@ -1,4 +1,4 @@
 INCLUDEPATH += ../PlayerInfo \
                ../CommandInfo \
                ../Match
-LIBS += -L$$(PWD)/build/lib/match -lmatch
+LIBS += -L../build/lib/match -lmatch

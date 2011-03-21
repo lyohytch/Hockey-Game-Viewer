@@ -1,4 +1,5 @@
-INCLUDEPATH += . ..
+INCLUDEPATH += . .. ../includes
+OTHER_FILES += ../includes/constants.h
 TEMPLATE = lib
 QT += core
 DESTDIR = ../build/lib/$$TARGET
