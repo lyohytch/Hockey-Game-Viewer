@@ -1,7 +1,7 @@
 #include "qthreadrunner.h"
 #include "constants.h"
 
-QThreadRunner::~QThreadRunner()
+QThreadPeriodRunner::~QThreadPeriodRunner()
 {
     foreach(QTimerLauncher *timer, timers)
     {
@@ -12,13 +12,20 @@ QThreadRunner::~QThreadRunner()
     timers.clear();
 }
 
-void QThreadRunner::run()
+void QThreadPeriodRunner::run()
 {
     qDebug()<<"Start new runner operation at "<<QThread::currentThreadId()<<" thread id";
     QTimerLauncher *timer =  new QTimerLauncher();
     timer->setOperation(operation());
     timer->startTimer(operation()->interval());
     timers.append(timer);
+    exec();
+}
+
+void QThreadOneRunner::run()
+{
+    qDebug()<<"Start new runner operation at "<<QThread::currentThreadId()<<" thread id";
+    operation()->run();
     exec();
 }
 

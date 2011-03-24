@@ -39,8 +39,8 @@ class QThreadRunner : public QThread
             _operationName = copyOperationName;
             _operation = copyOperation;
         }
-        ~QThreadRunner();
-        void run();
+        virtual ~QThreadRunner() {}
+        virtual void run() = 0;
         IOperation* operation() const
         {
             return _operation;
@@ -53,6 +53,27 @@ class QThreadRunner : public QThread
     private:
         IOperation* _operation;
         QString _operationName;
-        QList<QTimerLauncher *> timers;
+
 };
+
+class QThreadPeriodRunner:public QThreadRunner
+{
+    Q_OBJECT
+public:
+    QThreadPeriodRunner(const QString& copyOperationName, IOperation* copyOperation): QThreadRunner(copyOperationName, copyOperation) {}
+    virtual ~QThreadPeriodRunner();
+    virtual void run();
+private:
+    QList<QTimerLauncher *> timers;
+};
+
+class QThreadOneRunner:public QThreadRunner
+{
+    Q_OBJECT
+public:
+    QThreadOneRunner(const QString& copyOperationName, IOperation* copyOperation): QThreadRunner(copyOperationName, copyOperation) {}
+    virtual ~QThreadOneRunner() {}
+    virtual void run();
+};
+
 #endif // QTHREADRUNNER_H

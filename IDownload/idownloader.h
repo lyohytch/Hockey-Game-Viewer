@@ -29,7 +29,8 @@ class IDownloader : public IOperation
         void GamingDayFetched(const QString& urlContent);
         void MatchFetched(const QString& urlContent);
         void CommandFetched(const QString& urlContent);
-        void PlayerFetched(const QString& fetched);    
+        void PlayerFetched(const QString& fetched);
+        void finish();
     public slots:
         void setDate(const QDate& copyDate)
         {

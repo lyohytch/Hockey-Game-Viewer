@@ -10,7 +10,8 @@ class QThreadRunnerPool : public QObject
     Q_OBJECT
 public:
     QThreadRunnerPool(QObject *parent = 0);
-    void start();
+    void startAll();
+    void startRunnerByName(const QString &opName);
     void appendRunner(QThreadRunner *runner);
     QThreadRunner* getRunner(const QString &opName);
 private:

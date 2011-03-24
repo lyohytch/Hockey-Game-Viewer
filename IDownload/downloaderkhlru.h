@@ -13,7 +13,7 @@ class DownloaderKhlRu : public IDownloader
     public:
         explicit DownloaderKhlRu(QObject* parent = 0, const QString& siteName = "www.khl.ru") : IDownloader(parent, siteName)
         {
-            setInterval(5000);
+            setInterval(20000);
         }
         virtual ~DownloaderKhlRu() {}
         virtual void fetchGamingMonth()
@@ -43,6 +43,7 @@ class DownloaderKhlRu : public IDownloader
         virtual void run()
         {
             qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
+            emit finish();
         }
 
     signals:

@@ -7,12 +7,17 @@ QThreadRunnerPool::QThreadRunnerPool(QObject *parent) :
 {
 }
 
-void QThreadRunnerPool::start()
+void QThreadRunnerPool::startAll()
 {
     foreach(QThreadRunner *runner, _runners)
     {
         runner->start();
     }
+}
+
+void QThreadRunnerPool::startRunnerByName(const QString &opName)
+{
+    getRunner(opName)->start();
 }
 
 void QThreadRunnerPool::appendRunner(QThreadRunner *runner)

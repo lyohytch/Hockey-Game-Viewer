@@ -1,7 +1,13 @@
 #ifndef PRESENTATION_H
 #define PRESENTATION_H
-
 #include <QObject>
+#include <QtNetwork/QNetworkProxy>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
+#include <QUrl>
+#include <QFile>
+
 #include "iview.h"
 #include "operationpool.h"
 #include "qthreadrunnerpool.h"
@@ -15,6 +21,9 @@ signals:
 
 private slots:
     void gamingDaySelected(const QDate & gameDay);
+    void downloadFinished();
+    void httpFinished();
+    void httpReadyRead();
 private:
     IView * view;
     OperationPool *downloaders;
@@ -25,6 +34,10 @@ private:
     void createParsersList();
     void createRunnersList();
     void connectOnEvents();
+
+    QNetworkAccessManager *mgr;
+    QNetworkReply *reply;
+    QFile *file;
 
 
 };
