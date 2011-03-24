@@ -19,6 +19,9 @@ class GameViewer : public IView
 
     private:
         Ui::GameViewer* ui;
+
+private slots:
+    void on_calendarWidget_activated(QDate date);
 };
 
 #endif // GAMEVIEWER_H
