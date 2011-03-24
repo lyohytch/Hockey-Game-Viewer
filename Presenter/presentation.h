@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include "iview.h"
-#include "downloaderspool.h"
-#include "parserpool.h"
+#include "operationpool.h"
+#include "qthreadrunnerpool.h"
 
 class presentation: public QObject
 {
@@ -17,10 +17,14 @@ private slots:
     void gamingDaySelected(const QDate & gameDay);
 private:
     IView * view;
-    DownloadersPool *downloaders;
-    ParserPool *parsers;
+    OperationPool *downloaders;
+    OperationPool *parsers;
+    QThreadRunnerPool *runners;
+
     void createDownloadersList();
     void createParsersList();
+    void createRunnersList();
+    void connectOnEvents();
 
 
 };

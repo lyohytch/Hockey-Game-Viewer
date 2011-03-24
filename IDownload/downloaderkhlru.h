@@ -1,6 +1,9 @@
 #ifndef DOWNLOADERKHLRU_H
 #define DOWNLOADERKHLRU_H
 
+#include <QThread>
+#include <QDateTime>
+
 #include "constants.h"
 #include "idownloader.h"
 
@@ -8,7 +11,11 @@ class DownloaderKhlRu : public IDownloader
 {
         Q_OBJECT
     public:
-        explicit DownloaderKhlRu(QObject* parent = 0, const QString& siteName = "www.khl.ru") : IDownloader(parent, siteName) {}
+        explicit DownloaderKhlRu(QObject* parent = 0, const QString& siteName = "www.khl.ru") : IDownloader(parent, siteName)
+        {
+            setInterval(5000);
+        }
+        virtual ~DownloaderKhlRu() {}
         virtual void fetchGamingMonth()
         {
             qDebug();
@@ -33,16 +40,12 @@ class DownloaderKhlRu : public IDownloader
             Q_UNUSED(playerName);
             qDebug();
         }
-
-        virtual void run ()
+        virtual void run()
         {
-            qDebug();
+            qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
         }
 
     signals:
-
-    public slots:
-
 };
 
 #endif // DOWNLOADERKHLRU_H

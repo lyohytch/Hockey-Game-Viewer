@@ -1,3 +1,3 @@
 #include <QDebug>
 
-#define qDebug()  qDebug()<<__FUNCTION__<<"("<<__LINE__<<")"<<" : "
+#define qDebug()  qDebug()<<__FILE__<<":"<<__FUNCTION__<<"("<<__LINE__<<")"<<":"

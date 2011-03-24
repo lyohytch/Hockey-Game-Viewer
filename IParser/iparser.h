@@ -1,25 +1,14 @@
 #ifndef IPARSER_H
 #define IPARSER_H
 
-#include <QObject>
-#include <QRunnable>
+#include "ioperation.h"
 
-class IParser : public QObject, public QRunnable
+class IParser : public IOperation
 {
         Q_OBJECT
         Q_PROPERTY(QString targetSite READ targetSite)
     public:
-        explicit IParser(QObject* parent = 0 , const QString& siteName = 0) : QObject(parent), _targetSite(siteName) {}
-        QString targetSite() const
-        {
-            return _targetSite;
-        }
-    signals:
-
-    public slots:
-
-    private:
-        QString _targetSite;
+        IParser(QObject* parent = 0, const QString& siteName = 0) : IOperation(parent, siteName) {}
 };
 
 #endif // IPARSER_H

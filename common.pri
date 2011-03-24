@@ -1,8 +1,9 @@
-INCLUDEPATH += . .. ../includes
+INCLUDEPATH += . .. ../includes ../IOperation
 OTHER_FILES += ../includes/constants.h
 TEMPLATE = lib
 QT += core
-DESTDIR = ../build/lib/$$TARGET
+unix:DESTDIR = ../build/bin
+win32:DESTDIR = ../build/lib/$$TARGET
 win32:DLLDESTDIR = ../build/bin
 MOC_DIR = ../build/mocs/$$TARGET
 OBJECTS_DIR = ../build/objs/$$TARGET

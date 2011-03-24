@@ -1,11 +1,10 @@
 TARGET = parser
 HEADERS += \
     iparser.h \
-    parserpool.h \
     parserkhlru.h
 
 SOURCES += \
-    parserpool.cpp \
     parserkhlru.cpp
 
+LIBS += -L../build/bin -lioperation
 include ( ../common.pri )

@@ -1,22 +1,19 @@
 #ifndef IDOWNLOADER_H
 #define IDOWNLOADER_H
 
-#include <QObject>
-#include <QRunnable>
 #include <QDate>
+#include "ioperation.h"
 
-class IDownloader : public QObject, public QRunnable
+class IDownloader : public IOperation
 {
         Q_OBJECT
-        Q_PROPERTY(QString targetSite READ targetSite)
+
         Q_PROPERTY(QDate date READ date WRITE setDate)
     public:
-        explicit IDownloader(QObject* parent = 0, const QString& siteName = 0): QObject(parent), _targetSite(siteName) {}
+        explicit IDownloader(QObject* parent = 0, const QString& siteName = 0): IOperation(parent, siteName) {}
 
-        QString targetSite() const
-        {
-            return _targetSite;
-        }
+        virtual ~IDownloader() {}
+
         QDate date() const
         {
             return _date;
@@ -32,14 +29,13 @@ class IDownloader : public QObject, public QRunnable
         void GamingDayFetched(const QString& urlContent);
         void MatchFetched(const QString& urlContent);
         void CommandFetched(const QString& urlContent);
-        void PlayerFetched(const QString& fetched);
+        void PlayerFetched(const QString& fetched);    
     public slots:
         void setDate(const QDate& copyDate)
         {
             _date = copyDate;
         }
     private:
-        QString _targetSite;
         QDate _date;
 
 };

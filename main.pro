@@ -4,6 +4,9 @@ SUBDIRS += PlayerInfo \
            CommandInfo \
            Match \
            GamingDay \
+           IOperation \
            IParser \
            IDownload \
-           Presenter
+           Presenter \
+           IRWData \
+           viewer
