@@ -17,6 +17,7 @@ void QThreadPeriodRunner::run()
     qDebug()<<"Start new runner operation at "<<QThread::currentThreadId()<<" thread id";
     QTimerLauncher *timer =  new QTimerLauncher();
     timer->setOperation(operation());
+    qDebug()<<"Interval: "<<operation()->interval();
     timer->startTimer(operation()->interval());
     timers.append(timer);
     exec();
@@ -32,6 +33,7 @@ void QThreadOneRunner::run()
 void QTimerLauncher::timerEvent(QTimerEvent *event)
 {
     qDebug()<< "Timer ID:" << event->timerId()<<":"<<QThread::currentThreadId();
+    this->killTimer(event->timerId());
     operation()->run();
 }
 

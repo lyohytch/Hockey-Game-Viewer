@@ -1,5 +1,6 @@
 INCLUDEPATH += . .. ../includes ../IOperation
-OTHER_FILES += ../includes/constants.h
+OTHER_FILES += ../includes/constants.h \
+               ../includes/constants_downloader.h
 TEMPLATE = lib
 QT += core
 unix:DESTDIR = ../build/bin

@@ -2,9 +2,8 @@
 #define IOPERATION_H
 
 #include <QObject>
-#include <QRunnable>
 
-class IOperation : public QObject, public QRunnable
+class IOperation : public QObject
 {
         Q_OBJECT
         Q_PROPERTY(QString targetSite READ targetSite)

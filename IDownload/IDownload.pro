@@ -2,11 +2,15 @@ TARGET = downloader
 
 HEADERS += \
     idownloader.h \
-    downloaderkhlru.h
+    downloaderkhlru.h \
+    downloadergamingmonth.h
 
 SOURCES += \
-    downloaderkhlru.cpp
+    downloaderkhlru.cpp \
+    downloadergamingmonth.cpp
 
 LIBS += -L../build/bin -lioperation
+
+QT += network
 
 include ( ../common.pri )

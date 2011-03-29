@@ -22,8 +22,6 @@ signals:
 private slots:
     void gamingDaySelected(const QDate & gameDay);
     void downloadFinished();
-    void httpFinished();
-    void httpReadyRead();
 private:
     IView * view;
     OperationPool *downloaders;
@@ -34,12 +32,6 @@ private:
     void createParsersList();
     void createRunnersList();
     void connectOnEvents();
-
-    QNetworkAccessManager *mgr;
-    QNetworkReply *reply;
-    QFile *file;
-
-
 };
 
 #endif // PRESENTATION_H
