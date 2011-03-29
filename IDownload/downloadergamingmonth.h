@@ -2,6 +2,19 @@
 #define DOWNLOADERGAMINGMONTH_H
 
 #include "downloaderkhlru.h"
+class ReceiverKhlRuGamingMonth : public IReceiver
+{
+    Q_OBJECT
+    ReceiverKhlRuGamingMonth(QObject *parent = 0, const QString &fname = 0): IReceiver(parent, fname)
+    {
+        file = new QFile(fname);
+        file->open(QIODevice::WriteOnly);
+    }
+protected slots:
+ virtual void httpFinished();
+ virtual void httpReadyRead();
+};
+
 class DownKhlRuGamingMonth : public DownloaderKhlRu
 {
     Q_OBJECT
@@ -11,9 +24,6 @@ class DownKhlRuGamingMonth : public DownloaderKhlRu
         setInterval(20000);
     }
     virtual void run();
-protected slots:
-    virtual void httpFinished();
-    virtual void httpReadyRead();
 };
 
 #endif // DOWNLOADERGAMINGMONTH_H

@@ -2,12 +2,30 @@
 #define IDOWNLOADER_H
 
 #include <QDate>
+#include <QFile>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
 #include "ioperation.h"
+class IReceiver : public QObject
+{
+    Q_OBJECT
+   public:
+    IReceiver(QObject *parent = 0, const QString &fname = 0):QObject(parent) {}
+    void setMgr(QNetworkAccessManager *_mgr)
+    {
+        mgr = _mgr;
+    }
+   protected slots:
+    virtual void httpFinished() = 0;
+    virtual void httpReadyRead() = 0;
+protected:
+    QNetworkAccessManager *mgr;
+    QNetworkReply *reply;
+    QFile *file;
+};
 
 class IDownloader : public IOperation
 {
@@ -52,16 +70,11 @@ class IDownloader : public IOperation
         {
             return _pwdProxy;
         }
-    protected:
-        QNetworkAccessManager *mgr;
-        QNetworkReply *reply;
     protected slots:
-        virtual void httpFinished() = 0;
-        virtual void httpReadyRead() = 0;
     signals:
         void fetchedGamingMonth();
     public slots:
-        void setDate(const QDate& copyDate)
+        void setDate(QDate copyDate)
         {
             _date = copyDate;
         }
@@ -70,7 +83,7 @@ class IDownloader : public IOperation
         {
             _typeProxy = type;
         }
-        void setHostProxy(const QString& host)
+        void setHostProxy(QString host)
         {
             _hostProxy = host;
         }
@@ -78,11 +91,11 @@ class IDownloader : public IOperation
         {
             _portProxy = port;
         }
-        void setUserProxy(const QString& user)
+        void setUserProxy(QString user)
         {
             _userProxy = user;
         }
-        void setPwdProxy(const QString& pwd)
+        void setPwdProxy(QString pwd)
         {
             _pwdProxy = pwd;
         }

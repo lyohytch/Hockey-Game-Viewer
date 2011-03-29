@@ -84,14 +84,14 @@ void presentation::createDownloadersList()
 //    _portProxy = 3128;
 //    _userProxy  = QString();
 //    _pwdProxy = QString();
-   DownKhlRuGamingMonth *el = new DownKhlRuGamingMonth(downloaders);
-   el->setDate(QDate(2011, 03, 29));
-   el->setTypeProxy(QNetworkProxy::HttpProxy);
-   el->setHostProxy("172.18.0.1");
-   el->setPortProxy(3128);
-   el->setUserProxy(QString());
-   el->setPwdProxy(QString());
-   downloaders->appendOperation(el);
+//   DownKhlRuGamingMonth *el = new DownKhlRuGamingMonth(downloaders);
+//   el->setDate(QDate(2011, 03, 29));
+//   el->setTypeProxy(QNetworkProxy::HttpProxy);
+//   el->setHostProxy("172.18.0.1");
+//   el->setPortProxy(3128);
+//   el->setUserProxy(QString());
+//   el->setPwdProxy(QString());
+   downloaders->appendOperation(new DownKhlRuGamingMonth(downloaders));
 }
 
 void presentation::createParsersList()

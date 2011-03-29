@@ -7,31 +7,26 @@
 void DownKhlRuGamingMonth::run()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    QString downDir = ResTmpDownloadPath + KhlRuName + date().year() + "/";
-    qDebug()<<"Date: "<<date();
-    qDebug() <<"Directory:"<< downDir;
-    QDir dwnDir(downDir);
-    if (!dwnDir.exists())
-    {
-        dwnDir.mkpath(downDir);
-    }
+    ReceiverKhlRuGamingMonth *rec = new ReceiverKhlRuGamingMonth("03.html");
 
-    file = new QFile(downDir + date().month() + ".html");
-    mgr = new QNetworkAccessManager(this);
-    mgr->setProxy( QNetworkProxy(((QNetworkProxy::ProxyType)typeProxy()), hostProxy(), portProxy(),
-                                     userProxy(), pwdProxy()));
+    rec->setupFile("03.html");
+    file = new QFile("03.html");
+    file->open(QIODevice::WriteOnly);
+    mgr = new QNetworkAccessManager();
+    mgr->setProxy( QNetworkProxy(QNetworkProxy::HttpProxy, "172.18.0.1", 3128,
+                                     QString(), QString()));
 
-    connect(reply, SIGNAL(finished()), this,
-            SLOT(httpFinished()));
-    connect(reply,SIGNAL(readyRead()), this,
-            SLOT(httpReadyRead()));
+   reply = mgr->get(QNetworkRequest(QUrl(QString::fromUtf8("http://www.khl.ru/calendar/186/03/"))));
 
-
-    reply = mgr->get(QNetworkRequest(QUrl(QString::fromUtf8("http://www.khl.ru/players/?letter=É"))));
+   QObject::connect(reply, SIGNAL(finished()), this,
+                    SLOT(httpFinished()), Qt::QueuedConnection);
+   QObject::connect(reply,SIGNAL(readyRead()), this,
+                    SLOT(httpReadyRead()), Qt::QueuedConnection);
 }
 
-void DownKhlRuGamingMonth::httpFinished()
+void ReceiverKhlRuGamingMonth::httpFinished()
 {
+    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
     if(reply->error())
     {
@@ -53,9 +48,9 @@ void DownKhlRuGamingMonth::httpFinished()
     emit fetchedGamingMonth();
 }
 
-void DownKhlRuGamingMonth::httpReadyRead()
+void ReceiverKhlRuGamingMonth::httpReadyRead()
 {
-    qDebug();
+    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     if (file)
     {
         qDebug()<<"Write to file";
