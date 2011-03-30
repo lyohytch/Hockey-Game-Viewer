@@ -1,3 +1,7 @@
 Makefile*
 *.pro.user
 build/
+Resource/tmp/
+*.o
+moc_*
+ui_*.h
