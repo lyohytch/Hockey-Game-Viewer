@@ -50,9 +50,11 @@ class QThreadRunner : public QThread
             return _operationName;
         }
     public slots:
+
     private:
         IOperation* _operation;
         QString _operationName;
+
 
 };
 
@@ -63,6 +65,7 @@ public:
     QThreadPeriodRunner(const QString& copyOperationName, IOperation* copyOperation): QThreadRunner(copyOperationName, copyOperation) {}
     virtual ~QThreadPeriodRunner();
     virtual void run();
+    void stopExec();
 private:
     QList<QTimerLauncher *> timers;
 };

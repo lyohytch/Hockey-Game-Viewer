@@ -23,6 +23,9 @@
       <height>201</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Select day  for match results viewing</string>
+    </property>
     <property name="firstDayOfWeek">
      <enum>Qt::Monday</enum>
     </property>

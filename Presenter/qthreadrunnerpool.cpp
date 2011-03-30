@@ -2,34 +2,41 @@
 #include "qthreadrunnerpool.h"
 #include "constants.h"
 
-QThreadRunnerPool::QThreadRunnerPool(QObject *parent) :
+QThreadRunnerPool::QThreadRunnerPool(QObject* parent) :
     QObject(parent)
 {
 }
 
 void QThreadRunnerPool::startAll()
 {
-    foreach(QThreadRunner *runner, _runners)
+    foreach(QThreadRunner * runner, _runners)
+    {
+        if (!runner->isRunning())
+        {
+            runner->start();
+        }
+    }
+}
+
+void QThreadRunnerPool::startRunnerByName(const QString& opName)
+{
+    QThreadRunner* runner = getRunner(opName);
+    if (!runner->isRunning())
     {
         runner->start();
     }
 }
 
-void QThreadRunnerPool::startRunnerByName(const QString &opName)
-{
-    getRunner(opName)->start();
-}
-
-void QThreadRunnerPool::appendRunner(QThreadRunner *runner)
+void QThreadRunnerPool::appendRunner(QThreadRunner* runner)
 {
     _runners.append(runner);
 }
 
-QThreadRunner* QThreadRunnerPool::getRunner(const QString &opName)
+QThreadRunner* QThreadRunnerPool::getRunner(const QString& opName)
 {
     foreach(QThreadRunner * runner, _runners)
     {
-        if (runner->operationName() == opName )
+        if (runner->operationName() == opName)
         {
             return runner;
         }

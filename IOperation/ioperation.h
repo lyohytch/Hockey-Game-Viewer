@@ -21,7 +21,7 @@ class IOperation : public QObject
         }
         virtual void run() = 0;
     signals:
-
+        void endOperation();
     public slots:
        void setInterval(long copyInterval)
        {
@@ -31,7 +31,5 @@ class IOperation : public QObject
     private:
         QString _targetSite;
         long _interval;
-
 };
-
 #endif // IOPERATION_H

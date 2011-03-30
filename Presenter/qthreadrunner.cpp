@@ -1,3 +1,5 @@
+#include <QObject>
+
 #include "qthreadrunner.h"
 #include "constants.h"
 
@@ -18,14 +20,22 @@ void QThreadPeriodRunner::run()
     QTimerLauncher *timer =  new QTimerLauncher();
     timer->setOperation(operation());
     qDebug()<<"Interval: "<<operation()->interval();
+    operation()->run();
     timer->startTimer(operation()->interval());
     timers.append(timer);
     exec();
 }
 
+void QThreadPeriodRunner::stopExec()
+{
+    qDebug()<<"Stop thread execution";
+    this->quit();
+}
+
 void QThreadOneRunner::run()
 {
     qDebug()<<"Start new runner operation at "<<QThread::currentThreadId()<<" thread id";
+    connect(operation(), SIGNAL(endOperation()), this, SLOT(quit()), Qt::QueuedConnection);
     operation()->run();
     exec();
 }

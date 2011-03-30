@@ -50,13 +50,6 @@ void presentation::downloadFinished()
 void presentation::createDownloadersList()
 {
     downloaders = new OperationPool(this);
-    //TEST
-//    _date =  QDate(2011, 03, 29);
-//    _typeProxy = QNetworkProxy::HttpProxy;
-//    _hostProxy = "172.18.0.1";
-//    _portProxy = 3128;
-//    _userProxy  = QString();
-//    _pwdProxy = QString();
   DownKhlRuGamingMonth *el = new DownKhlRuGamingMonth(downloaders);
   el->setDate(QDate(2008, 10, 29));
   el->setTypeProxy(QNetworkProxy::HttpProxy);

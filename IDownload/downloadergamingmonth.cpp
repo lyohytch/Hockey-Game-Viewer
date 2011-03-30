@@ -69,6 +69,7 @@ void DownKhlRuGamingMonth::launchReceiver()
     KhlRuGamingMonthReceiver *receiver = new KhlRuGamingMonthReceiver(mgr, reply, file);
 
     connect(receiver, SIGNAL(finished()), this, SIGNAL(fetchedGamingMonth()), Qt::QueuedConnection);
+    connect(receiver, SIGNAL(finished()), this, SIGNAL(endOperation()), Qt::QueuedConnection);
 
     connect(reply, SIGNAL(finished()), receiver, SLOT(httpFinished()), Qt::QueuedConnection);
     connect(reply,SIGNAL(readyRead()), receiver, SLOT(httpReadyRead()), Qt::QueuedConnection);
