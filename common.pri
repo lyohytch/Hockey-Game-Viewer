@@ -2,6 +2,7 @@ INCLUDEPATH += . .. ../includes ../IOperation
 OTHER_FILES += ../includes/constants.h \
                ../includes/constants_downloader.h
 TEMPLATE = lib
+#CONFIG += staticlib
 QT += core
 unix:DESTDIR = ../build/bin
 win32:DESTDIR = ../build/lib/$$TARGET

@@ -15,8 +15,6 @@ class DownloaderKhlRu : public IDownloader
         {
         }
         virtual ~DownloaderKhlRu() {}
-    protected:
-        QFile *file;
     signals:
 };
 

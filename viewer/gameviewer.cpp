@@ -18,4 +18,5 @@ GameViewer::~GameViewer()
 void GameViewer::on_calendarWidget_activated(QDate date)
 {
     qDebug()<<"New date"<<":"<<date;
+    emit GamingDaySelected(date);
 }

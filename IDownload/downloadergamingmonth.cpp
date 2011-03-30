@@ -1,30 +1,92 @@
 #include <QDir>
+#include <QDate>
 
 #include "constants.h"
-#include "constants_downloader.h"
 #include "downloadergamingmonth.h"
 
 void DownKhlRuGamingMonth::run()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    ReceiverKhlRuGamingMonth *rec = new ReceiverKhlRuGamingMonth("03.html");
 
-    rec->setupFile("03.html");
-    file = new QFile("03.html");
-    file->open(QIODevice::WriteOnly);
-    mgr = new QNetworkAccessManager();
-    mgr->setProxy( QNetworkProxy(QNetworkProxy::HttpProxy, "172.18.0.1", 3128,
-                                     QString(), QString()));
+    setupUrlAndFileByDate();
+    setupNetManager();
 
-   reply = mgr->get(QNetworkRequest(QUrl(QString::fromUtf8("http://www.khl.ru/calendar/186/03/"))));
+    launchReceiver();
 
-   QObject::connect(reply, SIGNAL(finished()), this,
-                    SLOT(httpFinished()), Qt::QueuedConnection);
-   QObject::connect(reply,SIGNAL(readyRead()), this,
-                    SLOT(httpReadyRead()), Qt::QueuedConnection);
 }
 
-void ReceiverKhlRuGamingMonth::httpFinished()
+void DownKhlRuGamingMonth::setupUrlAndFileByDate()
+{
+    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
+    url = KhlRuUrl + GameMonth;
+    fname = QString();
+    newDir = QDir::currentPath() + "/" + ResTmpDownloadPath + KhlRuName + GameMonth;
+    qDebug()<<newDir;
+    foreach (Season season , seasons)
+    {
+        if ( isRegular( date().year(), date().month(), season ) )
+        {
+
+            url += getAddToUrl(regulars, season.yearStart) + "/" + QString::number(date().month()) + "/";
+            newDir += QString::number(season.yearStart) + "-" + QString::number(season.yearEnd) + "/";
+            fname = QString::number(date().month()) + ".html";
+            break;
+        }
+        if ( isPlayOffs( date().year(), date().month(), season ) )
+        {
+            url += getAddToUrl(playoffs, season.yearPlayOff) + "/" + QString::number(date().month());
+            newDir += QString::number(season.yearStart) + "-" + QString::number(season.yearEnd) + "/";
+            fname = QString::number(date().month()) + ".html";
+            break;
+        }
+    }
+
+    qDebug()<<"url"<<":"<<url;
+    qDebug()<<"fname"<<":"<<fname;
+    qDebug()<<"newDir"<<":"<<newDir;
+    QDir dir(newDir);
+    if (!dir.exists())
+    {
+        qDebug()<<"Dir isn't exist ";
+        dir.mkpath(newDir);
+    }
+    file = new QFile(newDir + "/" + fname);
+    file->open(QIODevice::WriteOnly);
+}
+
+void DownKhlRuGamingMonth::setupNetManager()
+{
+    mgr = new QNetworkAccessManager();
+    mgr->setProxy( QNetworkProxy(QNetworkProxy::ProxyType(this->typeProxy()),
+                                 this->hostProxy(), this->portProxy(),
+                                 this->userProxy(), this->pwdProxy()));
+}
+
+void DownKhlRuGamingMonth::launchReceiver()
+{
+    reply = mgr->get(QNetworkRequest(QUrl(url)));
+
+    KhlRuGamingMonthReceiver *receiver = new KhlRuGamingMonthReceiver(mgr, reply, file);
+
+    connect(receiver, SIGNAL(finished()), this, SIGNAL(fetchedGamingMonth()), Qt::QueuedConnection);
+
+    connect(reply, SIGNAL(finished()), receiver, SLOT(httpFinished()), Qt::QueuedConnection);
+    connect(reply,SIGNAL(readyRead()), receiver, SLOT(httpReadyRead()), Qt::QueuedConnection);
+}
+
+QString DownKhlRuGamingMonth::getAddToUrl(const QList<MapValue> & list, int key)
+{
+    foreach (MapValue el, list)
+    {
+        if (key == el.year)
+        {
+            return el.addUrl;
+        }
+    }
+    return QString();
+}
+
+void KhlRuGamingMonthReceiver::httpFinished()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
@@ -39,21 +101,28 @@ void ReceiverKhlRuGamingMonth::httpFinished()
     }
     else
     {
-       qDebug()<<"Downloaded index.html";
+       qDebug()<<"Downloaded url";
     }
     reply->deleteLater();
     reply = 0;
     file->close();
 
-    emit fetchedGamingMonth();
+//    //TODO: need to delete objects
+//    file->deleteLater();
+//    file = 0;
+
+    mgr->deleteLater();
+    mgr = 0;
+
+    emit finished();
 }
 
-void ReceiverKhlRuGamingMonth::httpReadyRead()
+void KhlRuGamingMonthReceiver::httpReadyRead()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     if (file)
     {
-        qDebug()<<"Write to file";
+        qDebug()<<"Write into file";
         file->write(reply->readAll());
     }
 }

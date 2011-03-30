@@ -33,7 +33,6 @@ void QThreadOneRunner::run()
 void QTimerLauncher::timerEvent(QTimerEvent *event)
 {
     qDebug()<< "Timer ID:" << event->timerId()<<":"<<QThread::currentThreadId();
-    this->killTimer(event->timerId());
     operation()->run();
 }
 

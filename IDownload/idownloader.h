@@ -9,22 +9,20 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "ioperation.h"
-class IReceiver : public QObject
+class IReceiver:public QObject
 {
     Q_OBJECT
-   public:
-    IReceiver(QObject *parent = 0, const QString &fname = 0):QObject(parent) {}
-    void setMgr(QNetworkAccessManager *_mgr)
-    {
-        mgr = _mgr;
-    }
-   protected slots:
+public:
+    IReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file):mgr(_mgr), reply(_reply), file(_file) {}
+signals:
+    void finished();
+public slots:
     virtual void httpFinished() = 0;
     virtual void httpReadyRead() = 0;
 protected:
-    QNetworkAccessManager *mgr;
-    QNetworkReply *reply;
-    QFile *file;
+    QNetworkAccessManager* mgr;
+    QNetworkReply* reply;
+    QFile* file;
 };
 
 class IDownloader : public IOperation
@@ -70,7 +68,10 @@ class IDownloader : public IOperation
         {
             return _pwdProxy;
         }
-    protected slots:
+    protected:
+        QNetworkAccessManager* mgr;
+        QNetworkReply* reply;
+        QFile* file;
     signals:
         void fetchedGamingMonth();
     public slots:
