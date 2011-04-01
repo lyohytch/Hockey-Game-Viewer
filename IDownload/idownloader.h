@@ -9,27 +9,28 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "ioperation.h"
-class IReceiver:public QObject
+#include "constants_downloader.h"
+
+class IReceiver: public QObject
 {
-    Q_OBJECT
-public:
-    IReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file):mgr(_mgr), reply(_reply), file(_file) {}
-signals:
-    void finished();
-public slots:
-    virtual void httpFinished() = 0;
-    virtual void httpReadyRead() = 0;
-protected:
-    QNetworkAccessManager* mgr;
-    QNetworkReply* reply;
-    QFile* file;
+        Q_OBJECT
+    public:
+        IReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file):
+            mgr(_mgr), reply(_reply), file(_file) {}
+    signals:
+        void finished();
+    public slots:
+        virtual void httpFinished() = 0;
+        virtual void httpReadyRead() = 0;
+    protected:
+        QNetworkAccessManager* mgr;
+        QNetworkReply* reply;
+        QFile* file;
 };
 
 class IDownloader : public IOperation
 {
         Q_OBJECT
-
-        Q_PROPERTY(QDate date READ date WRITE setDate)
 
         Q_PROPERTY(int typeProxy READ  typeProxy WRITE setTypeProxy)
         Q_PROPERTY(QString hostProxy READ hostProxy WRITE setHostProxy)
@@ -42,11 +43,6 @@ class IDownloader : public IOperation
         }
 
         virtual ~IDownloader() {}
-
-        QDate date() const
-        {
-            return _date;
-        }
 
         int typeProxy() const
         {
@@ -69,17 +65,17 @@ class IDownloader : public IOperation
             return _pwdProxy;
         }
     protected:
+        virtual void setupUrlAndFileByDate() = 0;
+        virtual void setupNetManager() = 0;
+        virtual void launchReceiver() = 0;
         QNetworkAccessManager* mgr;
         QNetworkReply* reply;
         QFile* file;
+        QString urlForDownload;
+        QString fileForSave;
     signals:
         void fetchedGamingMonth();
     public slots:
-        void setDate(QDate copyDate)
-        {
-            _date = copyDate;
-        }
-
         void setTypeProxy(int type)
         {
             _typeProxy = type;
@@ -101,7 +97,6 @@ class IDownloader : public IOperation
             _pwdProxy = pwd;
         }
     private:
-        QDate _date;
 
         int _typeProxy;
         QString _hostProxy;

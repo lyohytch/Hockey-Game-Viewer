@@ -4,6 +4,7 @@
 #include <QMap>
 
 const QString ResTmpDownloadPath("Resources/tmp/dwn/");
+const QString ResTmpParsePath("Resources/tmp/parse/");
 const QString KhlRuName("www.khl.ru/");
 const QString KhlRuUrl("http://www.khl.ru/");
 
@@ -63,18 +64,9 @@ const QList<Season> seasons(QList<Season>() << Season(2008, 9, 2009, 5, 2009, 3)
                             Season(2009, 9, 2010, 5, 2010, 3) <<
                             Season(2010, 9, 2011, 5, 2011, 3));
 
-
-//const QList<QStringMap> regulars(QList<QStringMap>() <<   QStringMap(2008, Regular_1) <<
-//                                 QStringMap(2009, Regular_2) <<
-//                                 QStringMap(2010, Regular_3));
-
-//const QList<QMap<QString, QString> > playoffs(QList<QStringMap>() << QStringMap("2009", PlayOffs_1) <<
-//        QStringMap("2010", PlayOffs_2) <<
-//        QStringMap("2011", PlayOffs_3));
-
-#define isRegular(year, month, season)   ((year==season.yearStart && month >= season.monthStart) || \
-        (year==season.yearPlayOff && month < season.monthPlayOff))
-#define isPlayOffs(year, month, season)  (year == season.yearPlayOff && month >= season.monthPlayOff &&  \
-        (year == season.yearEnd && month < season.monthEnd))
+#define isRegular(date, season)   ((date.year()==season.yearStart && date.month() >= season.monthStart) || \
+        (date.year()==season.yearPlayOff && date.month() < season.monthPlayOff))
+#define isPlayOffs(date, season)  (date.year() == season.yearPlayOff && date.month() >= season.monthPlayOff &&  \
+        (date.year() == season.yearEnd && date.month() < season.monthEnd))
 
 #endif // CONSTANTS_DOWNLOADER_H

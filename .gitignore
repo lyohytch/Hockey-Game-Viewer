@@ -1,7 +1,8 @@
 Makefile*
 *.pro.user
 build/
-Resource/tmp/
+Resources/tmp/
 *.o
 moc_*
 ui_*.h
+qrc_*.cpp

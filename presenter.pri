@@ -1,5 +1,6 @@
 INCLUDEPATH += ../IDownload \
-               ../IParser
+               ../IParser \
+               ../IRWData
 
 QT += network
-LIBS += -L../build/bin -lparser -ldownloader -lioperation
+LIBS += -L../build/bin -lparser -ldownloader -lioperation -lrwdata

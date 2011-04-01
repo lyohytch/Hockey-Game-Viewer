@@ -25,4 +25,21 @@ INCLUDEPATH += ../IDownload \
                ../includes \
                ../IOperation
 
-LIBS += -L../build/bin -lpresenter -lparser -ldownloader -lioperation
+MOC_DIR = ../build/mocs/$$TARGET
+OBJECTS_DIR = ../build/objs/$$TARGET
+
+QT += xmlpatterns
+LIBS += -L../build/bin -lpresenter -lparser -ldownloader -lioperation -lrwdata
+
+RESOURCES += ../resources.qrc
+
+## CONFIG settings(debug)
+CONFIG += debug
+CONFIG -= release
+DEFINES += DEBUGING
+DEFINES += PROS
+
+## CONFIG settings (release)
+#CONFIG += release
+#CONFIG -= debug
+#DEFINES += QT_NO_DEBUG QT_NO_DEBUG_OUTPUT QT_NO_WARNING_OUTPUT

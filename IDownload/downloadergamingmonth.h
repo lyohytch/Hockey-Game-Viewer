@@ -2,18 +2,18 @@
 #define DOWNLOADERGAMINGMONTH_H
 
 #include "downloaderkhlru.h"
-#include "constants_downloader.h"
 
 class KhlRuGamingMonthReceiver : public IReceiver
 {
         Q_OBJECT
     public:
-        KhlRuGamingMonthReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file) : IReceiver(_mgr, _reply, _file)
+        KhlRuGamingMonthReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file) :
+            IReceiver(_mgr, _reply, _file)
         {
         }
     public slots:
-      virtual void httpFinished();
-      virtual void httpReadyRead();
+        virtual void httpFinished();
+        virtual void httpReadyRead();
 
 };
 
@@ -21,21 +21,18 @@ class DownKhlRuGamingMonth : public DownloaderKhlRu
 {
         Q_OBJECT
     public:
-        DownKhlRuGamingMonth(QObject* parent = 0, const QString& siteName = "www.khl.ru") : DownloaderKhlRu(parent, siteName)
+        DownKhlRuGamingMonth(QObject* parent = 0, const QString& siteName = "www.khl.ru") :
+                DownloaderKhlRu(parent, siteName)
         {
-            setInterval(200000);
+            setInterval(10000);
         }
         virtual void run();
-
     protected:
-        void setupUrlAndFileByDate();
-        void setupNetManager();
-        void launchReceiver();
+       virtual  void setupUrlAndFileByDate();
+       virtual  void setupNetManager();
+       virtual  void launchReceiver();
+   private:
         QString getAddToUrl(const QList<MapValue> & list, int key);
-        QString url;
-        QString fname;
-        QString newDir;
-        QString currDir;
 };
 
 #endif // DOWNLOADERGAMINGMONTH_H

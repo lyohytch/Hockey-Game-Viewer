@@ -22,13 +22,19 @@ signals:
 private slots:
     void gamingDaySelected(const QDate & gameDay);
     void downloadFinished();
+    void parsingFinished();
+    void EmptyReadingFile();
 private:
     IView * view;
     OperationPool *downloaders;
     OperationPool *parsers;
+    OperationPool *readers;
     QThreadRunnerPool *runners;
 
+    QDate selectedDay;
+
     void createDownloadersList();
+    void createReadersList();
     void createParsersList();
     void createRunnersList();
     void connectOnEvents();

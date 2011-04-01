@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/parsing">
+        <file>Resources/requests/gamingmonth.xq</file>
+    </qresource>
+</RCC>

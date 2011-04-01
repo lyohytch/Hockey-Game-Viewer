@@ -7,6 +7,6 @@ SUBDIRS += PlayerInfo \
            IOperation \
            IParser \
            IDownload \
-           Presenter \
            IRWData \
+           Presenter \
            viewer

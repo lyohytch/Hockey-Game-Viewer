@@ -14,13 +14,9 @@ class ParserKhlRu : public IParser
     public:
         explicit ParserKhlRu(QObject* parent = 0, const QString& targetName = "www.khl.ru") : IParser(parent, targetName)
         {
-           setInterval(10000);
-        }
-        virtual void run()
-        {
-            qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
         }
 
+        virtual ~ParserKhlRu() {}
     signals:
 
 };

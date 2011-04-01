@@ -15,7 +15,9 @@ class DownloaderKhlRu : public IDownloader
         {
         }
         virtual ~DownloaderKhlRu() {}
-    signals:
+    protected:
+
+
 };
 
 #endif // DOWNLOADERKHLRU_H
