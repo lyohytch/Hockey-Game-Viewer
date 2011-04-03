@@ -2,4 +2,7 @@
     <qresource prefix="/parsing">
         <file>Resources/requests/gamingmonth.xq</file>
     </qresource>
+    <qresource prefix="/reading">
+        <file>Resources/requests/getmatchesforday.xq</file>
+    </qresource>
 </RCC>

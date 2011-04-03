@@ -91,9 +91,9 @@ void presentation::createDownloadersList()
     downloaders = new OperationPool(this);
   DownKhlRuGamingMonth *el = new DownKhlRuGamingMonth(downloaders);
   el->setDate(QDate(2008, 10, 29));
-  el->setTypeProxy(QNetworkProxy::HttpProxy);
-  el->setHostProxy("172.18.0.1");
-  el->setPortProxy(3128);
+  el->setTypeProxy(QNetworkProxy::NoProxy);
+  el->setHostProxy(QString());
+  el->setPortProxy(0);
   el->setUserProxy(QString());
   el->setPwdProxy(QString());
   downloaders->appendOperation(el);

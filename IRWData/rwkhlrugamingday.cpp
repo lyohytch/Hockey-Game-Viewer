@@ -9,7 +9,7 @@ void RWKhlRuGamingDay::run()
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     setSavedParsedFilename();
     QFile source(savedParsedFile);
-    if(source.open(QIODevice::ReadOnly))
+    if (source.open(QIODevice::ReadOnly))
     {
 
     }
@@ -23,18 +23,18 @@ void RWKhlRuGamingDay::run()
 void RWKhlRuGamingDay::setSavedParsedFilename()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    qDebug()<<"Date:"<<date();
+    qDebug() << "Date:" << date();
     savedParsedFile =  QString(QDir::currentPath() + "/" + ResTmpParsePath + KhlRuName + GameMonth);
-    qDebug()<<"tmpFname:"<<savedParsedFile;
+    qDebug() << "tmpFname:" << savedParsedFile;
     foreach(Season season , seasons)
     {
         if (isRegular(date(), season) || isPlayOffs(date(), season))
         {
 
             savedParsedFile += QString::number(season.yearStart) + "-" + QString::number(season.yearEnd) + "/" +
-                             QString::number(date().month()) + ".xml";
+                               QString::number(date().month()) + ".xml";
             break;
         }
     }
-    qDebug()<<"Saved parsed filename"<<":"<<savedParsedFile;
+    qDebug() << "Saved parsed filename" << ":" << savedParsedFile;
 }
