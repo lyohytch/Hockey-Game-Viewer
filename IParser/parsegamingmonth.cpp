@@ -16,6 +16,7 @@ void ParseKhlRuGamingMonth::run()
     if (output.exists())
     {
         qDebug()<<"Parsing file exists and newest";
+        output.close();
     }
     else
     {

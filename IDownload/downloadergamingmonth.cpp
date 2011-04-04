@@ -47,7 +47,7 @@ void DownKhlRuGamingMonth::setupUrlAndFileByDate()
         }
         if (isPlayOffs(date(), season))
         {
-            urlForDownload += getAddToUrl(playoffs, season.yearPlayOff) + "/" + QString::number(date().month());
+            urlForDownload += getAddToUrl(playoffs, season.yearPlayOff) + "/" + QString::number(date().month()) + "/";
             newDir += QString::number(season.yearStart) + "-" + QString::number(season.yearEnd) + "/";
             fileForSave = QString::number(date().month()) + ".html";
             break;
@@ -125,7 +125,7 @@ void KhlRuGamingMonthReceiver::httpFinished()
     file->close();
 
     //    //TODO: need to delete objects
-    mgr->deleteLater();
+    delete mgr;
     mgr = 0;
 }
 

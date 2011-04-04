@@ -7,6 +7,9 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
 #include <QFile>
+#include <QStandardItemModel>
+#include <QTableView>
+#include <QVBoxLayout>
 
 #include "iview.h"
 #include "operationpool.h"
@@ -24,6 +27,7 @@ private slots:
     void downloadFinished();
     void parsingFinished();
     void EmptyReadingFile();
+    void fillMatchesTable();
 private:
     IView * view;
     OperationPool *downloaders;
@@ -32,6 +36,8 @@ private:
     QThreadRunnerPool *runners;
 
     QDate selectedDay;
+
+    QStandardItemModel *tableModel;
 
     void createDownloadersList();
     void createReadersList();

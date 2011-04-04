@@ -13,30 +13,7 @@
   <property name="windowTitle">
    <string>GameViewer</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QCalendarWidget" name="calendarWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>281</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Select day  for match results viewing</string>
-    </property>
-    <property name="firstDayOfWeek">
-     <enum>Qt::Monday</enum>
-    </property>
-    <property name="gridVisible">
-     <bool>true</bool>
-    </property>
-    <property name="verticalHeaderFormat">
-     <enum>QCalendarWidget::NoVerticalHeader</enum>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>

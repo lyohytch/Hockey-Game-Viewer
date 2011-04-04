@@ -2,6 +2,8 @@
 #define IVIEW_H
 
 #include <QMainWindow>
+#include <QTableView>
+#include <QCalendarWidget>
 #include <QDate>
 
 class IView : public QMainWindow
@@ -15,6 +17,9 @@ class IView : public QMainWindow
         Q_PROPERTY(int portProxy READ portProxy WRITE setPortProxy)
         Q_PROPERTY(QString userProxy READ userProxy WRITE setUserProxy)
         Q_PROPERTY(QString pwdProxy READ pwdProxy WRITE setPwdProxy)
+
+        Q_PROPERTY(QTableView *table READ table WRITE setTable)
+        Q_PROPERTY(QCalendarWidget *calendar READ calendar WRITE setCalendar)
     public:
         IView(QWidget* parent = 0) : QMainWindow(parent) {}
         virtual ~IView() {}
@@ -42,6 +47,16 @@ class IView : public QMainWindow
         QString pwdProxy() const
         {
             return _pwdProxy;
+        }
+
+        QTableView *table() const
+        {
+            return _table;
+        }
+
+        QCalendarWidget *calendar() const
+        {
+            return _calendar;
         }
 
     signals:
@@ -73,6 +88,16 @@ class IView : public QMainWindow
             _pwdProxy = pwd;
         }
 
+        void setTable(QTableView *copyTable)
+        {
+            _table = copyTable;
+        }
+        void setCalendar(QCalendarWidget *copyCalendar)
+        {
+            _calendar = copyCalendar;
+        }
+
+
     private:
         QString _downloaderName;
 
@@ -81,6 +106,9 @@ class IView : public QMainWindow
         int _portProxy;
         QString _userProxy;
         QString _pwdProxy;
+
+        QTableView *_table;
+        QCalendarWidget *_calendar;
 };
 
 #endif // IVIEW_H
