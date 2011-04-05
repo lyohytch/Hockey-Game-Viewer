@@ -36,13 +36,6 @@ presentation::presentation(IView* _view)
 
     qDebug()<<"Main thread"<<":"<<QThread::currentThreadId();
 
-    //Test
-//    selectedDay = QDate(2011, 01, 10);
-//    qDebug()<<"Download finished. Start parsing";
-//    parsers->getOperationByName("www.khl.ru")->setDate(selectedDay);
-//    runners->getRunner("www.khl.ru-downloader")->stopExec();
-//    runners->startRunnerByName("www.khl.ru-parser");
-
 }
 
 void presentation::createReadersList()
@@ -69,66 +62,76 @@ void presentation::connectOnEvents()
 void presentation::fillMatchesTable()
 {
     qDebug()<<"View match info";
-    tableModel->clear();
-    tableModel->setHorizontalHeaderLabels(QStringList()<<tr("Home")<<tr("Away")<<tr("Count")<<tr("State"));
-    QStringList teams = ((IRWData *)(readers->getOperationByName("www.khl.ru")))->teams();
-    QStringList counts = ((IRWData *)(readers->getOperationByName("www.khl.ru")))->counts();
-    qDebug()<<"Teams"<<":"<< teams;
-    qDebug()<<"Counts"<<":"<<counts;
-    int cteam = teams.count();
-    int ccount = counts.count();
-    for(int i = 0; i < cteam; ++i)
+
+    //Filtering by date
+    if (readers->getOperationByName("www.khl.ru")->date() == selectedDay)
     {
-        QList<QStandardItem *> row;
-        qDebug()<<"home"<<":"<<(teams[i]).section("-",0,0);
-        qDebug()<<"away"<<":"<<(teams[i]).section("-",1,1);
-        QStandardItem *homeitem = new QStandardItem((teams[i]).section("-",0,0));
-        QStandardItem *awayitem = new QStandardItem((teams[i]).section("-",1,1));
-        QStandardItem *countitem = new QStandardItem();
-        if( i < ccount)
+        view->setStatus(QString( tr("Matches for ") + selectedDay.toString("dd.MM.yy")));
+        qDebug()<<view->status();
+        tableModel->clear();
+        tableModel->setHorizontalHeaderLabels(QStringList()<<tr("Home")<<tr("Away")<<tr("Count")<<tr("State"));
+        QStringList teams = ((IRWData *)(readers->getOperationByName("www.khl.ru")))->teams();
+        QStringList counts = ((IRWData *)(readers->getOperationByName("www.khl.ru")))->counts();
+        qDebug()<<"Teams"<<":"<< teams;
+        qDebug()<<"Counts"<<":"<<counts;
+        int cteam = teams.count();
+        int ccount = counts.count();
+        for(int i = 0; i < cteam; ++i)
         {
-            countitem->setText(counts[i]);
+            QList<QStandardItem *> row;
+            qDebug()<<"home"<<":"<<(teams[i]).section("-",0,0);
+            qDebug()<<"away"<<":"<<(teams[i]).section("-",1,1);
+            QStandardItem *homeitem = new QStandardItem((teams[i]).section("-",0,0));
+            QStandardItem *awayitem = new QStandardItem((teams[i]).section("-",1,1));
+            QStandardItem *countitem = new QStandardItem();
+            if( i < ccount)
+            {
+                countitem->setText(counts[i]);
+            }
+            QStandardItem *stateitem = new QStandardItem("Ended");
+
+            homeitem->setEditable(false);
+            awayitem->setEditable(false);
+            countitem->setEditable(false);
+            stateitem->setEditable(false);
+
+
+            row.append(homeitem);
+            row.append(awayitem);
+            row.append(countitem);
+            row.append(stateitem);
+
+            tableModel->appendRow(row);
         }
-        QStandardItem *stateitem = new QStandardItem("Ended");
-
-        homeitem->setEditable(false);
-        awayitem->setEditable(false);
-        countitem->setEditable(false);
-        stateitem->setEditable(false);
-
-
-        row.append(homeitem);
-        row.append(awayitem);
-        row.append(countitem);
-        row.append(stateitem);
-
-        tableModel->appendRow(row);
+        view->table()->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);;
+        view->table()->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+        view->table()->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
+        view->table()->horizontalHeader()->setResizeMode(3, QHeaderView::Stretch);
     }
-    view->table()->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);;
-    view->table()->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-    view->table()->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
-    view->table()->horizontalHeader()->setResizeMode(3, QHeaderView::Stretch);
-
 
 }
 
 void presentation::EmptyReadingFile()
 {
     qDebug()<<"Sorry, empty reading file";
-    qDebug()<<"Do I repeat downloading?";
+    //TODO: create question
+    view->setStatus(tr("Downloading matches info for ") + selectedDay.toString("dd.MM.yy"));
+    downloaders->getOperationByName("www.khl.ru")->setDate(selectedDay);
+    runners->startRunnerByName("www.khl.ru-downloader");
 }
 
 void presentation::gamingDaySelected(const QDate& gameDay)
 {
     qDebug()<<gameDay;
     selectedDay = gameDay;
-    downloaders->getOperationByName("www.khl.ru")->setDate(selectedDay);
-    runners->startRunnerByName("www.khl.ru-downloader");
+    readers->getOperationByName("www.khl.ru")->setDate(selectedDay);
+    runners->startRunnerByName("www.khl.ru-reader");
 }
 
 void presentation::downloadFinished()
 {
     qDebug()<<"Download successfully finished. Start parsing";
+    view->setStatus(tr("Parsing downlaoded matches info for ") + selectedDay.toString("dd.MM.yy"));
     parsers->getOperationByName("www.khl.ru")->setDate(selectedDay);
     runners->startRunnerByName("www.khl.ru-parser");
 }

@@ -7,10 +7,7 @@ class KhlRuGamingMonthReceiver : public IReceiver
 {
         Q_OBJECT
     public:
-        KhlRuGamingMonthReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file) :
-            IReceiver(_mgr, _reply, _file)
-        {
-        }
+        KhlRuGamingMonthReceiver(QNetworkAccessManager* _mgr, QFile* _file, const QString &urlForDownload);
     public slots:
         virtual void httpFinished();
         virtual void httpReadyRead();
@@ -29,8 +26,8 @@ class DownKhlRuGamingMonth : public DownloaderKhlRu
         virtual void run();
     protected:
        virtual  void setupUrlAndFileByDate();
-       virtual  void setupNetManager();
-       virtual  void launchReceiver();
+       virtual  void launchDownloadingProcess();
+       QFile file;
    private:
         QString getAddToUrl(const QList<MapValue> & list, int key);
 };

@@ -15,8 +15,8 @@ class IReceiver: public QObject
 {
         Q_OBJECT
     public:
-        IReceiver(QNetworkAccessManager* _mgr, QNetworkReply* _reply, QFile* _file):
-            mgr(_mgr), reply(_reply), file(_file) {}
+        IReceiver(QNetworkAccessManager* _mgr, QFile* _file):
+            mgr(_mgr), file(_file) {}
     signals:
         void finished();
     public slots:
@@ -66,11 +66,7 @@ class IDownloader : public IOperation
         }
     protected:
         virtual void setupUrlAndFileByDate() = 0;
-        virtual void setupNetManager() = 0;
-        virtual void launchReceiver() = 0;
-        QNetworkAccessManager* mgr;
-        QNetworkReply* reply;
-        QFile* file;
+        virtual void launchDownloadingProcess() = 0;
         QString urlForDownload;
         QString fileForSave;
     signals:

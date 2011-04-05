@@ -20,6 +20,8 @@ class IView : public QMainWindow
 
         Q_PROPERTY(QTableView *table READ table WRITE setTable)
         Q_PROPERTY(QCalendarWidget *calendar READ calendar WRITE setCalendar)
+
+        Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY SetStatusOnForm)
     public:
         IView(QWidget* parent = 0) : QMainWindow(parent) {}
         virtual ~IView() {}
@@ -59,8 +61,14 @@ class IView : public QMainWindow
             return _calendar;
         }
 
+        QString status() const
+        {
+            return _status;
+        }
+
     signals:
         void GamingDaySelected(const QDate& gameDate);
+        void SetStatusOnForm(const QString &status);
     public slots:
         void setdownloaderName(const QString& copySite)
         {
@@ -97,6 +105,11 @@ class IView : public QMainWindow
             _calendar = copyCalendar;
         }
 
+        void setStatus(const QString &copyStatus)
+        {
+            _status = copyStatus;
+            emit SetStatusOnForm(_status);
+        }
 
     private:
         QString _downloaderName;
@@ -109,6 +122,8 @@ class IView : public QMainWindow
 
         QTableView *_table;
         QCalendarWidget *_calendar;
+
+        QString _status;
 };
 
 #endif // IVIEW_H

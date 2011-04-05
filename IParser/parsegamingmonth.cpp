@@ -11,54 +11,45 @@ void ParseKhlRuGamingMonth::run()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     setFilenameForParsing();
-    // TODO: запускать процесс только в случае отсутствия или старого файла
-    QFile output(parsedFilename);
-    if (output.exists())
+    //Open query file
+    QFile queryFile(QString(":parsing/Resources/requests/gamingmonth.xq"));
+    if (queryFile.open(QIODevice::ReadOnly))
     {
-        qDebug()<<"Parsing file exists and newest";
-        output.close();
-    }
-    else
-    {
-        //Open query file
-        QFile queryFile(QString(":parsing/Resources/requests/gamingmonth.xq"));
-        if (queryFile.open(QIODevice::ReadOnly))
+        qDebug()<<"Query file opened";
+        QString request = queryFile.readAll();
+        QFile file(savedFilename);
+        if(file.open(QIODevice::ReadOnly))
         {
-            qDebug()<<"Query file opened";
-            QString request = queryFile.readAll();
-            QFile file(savedFilename);
-            if(file.open(QIODevice::ReadOnly))
+            QFile output(parsedFilename);
+            if ( output.open(QIODevice::ReadWrite) )
             {
-                QFile output(parsedFilename);
-                if ( output.open(QIODevice::ReadWrite) )
+                QXmlQuery xmlQuery;
+                qDebug()<<"File opened";
+                xmlQuery.bindVariable("document", &file);
+                xmlQuery.setQuery(request);
+                if( !xmlQuery.isValid())
                 {
-                    QXmlQuery xmlQuery;
-                    qDebug()<<"File opened";
-                    xmlQuery.bindVariable("document", &file);
-                    xmlQuery.setQuery(request);
-                    if( !xmlQuery.isValid())
-                    {
-                        qDebug()<<"Query isn't valid";
-                    }
-                    QXmlFormatter formatter(xmlQuery, &output);
-                    if( !xmlQuery.evaluateTo(&formatter))
-                    {
-                        qDebug()<<"Query can not evaluate!!";
-                    }
-                    output.close();
+                    qDebug()<<"Query isn't valid";
                 }
-                file.close();
+                QXmlFormatter formatter(xmlQuery, &output);
+                if( !xmlQuery.evaluateTo(&formatter))
+                {
+                    qDebug()<<"Query can not evaluate!!";
+                }
+                output.close();
             }
-            else
-            {
-                qDebug()<<"Can't open source file";
-            }
+            file.close();
         }
         else
         {
-            qDebug()<<"Can't open resource file";
+            qDebug()<<"Can't open source file";
         }
     }
+    else
+    {
+        qDebug()<<"Can't open resource file";
+    }
+
     emit parsedGamingMonth();
     emit endOperation();
 }

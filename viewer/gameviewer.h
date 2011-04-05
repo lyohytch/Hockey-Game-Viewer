@@ -1,6 +1,6 @@
 #ifndef GAMEVIEWER_H
 #define GAMEVIEWER_H
-
+#include <QLabel>
 #include "iview.h"
 #include "presentation.h"
 
@@ -16,13 +16,16 @@ class GameViewer : public IView
     public:
         explicit GameViewer(QWidget* parent = 0);
         ~GameViewer();
+    protected slots:
+        virtual void setStatusOnForm(const QString& status);
 
     private:
         Ui::GameViewer* ui;
+        QLabel *stateLabel;
         void init();
 
-private slots:
-    void on_calendarWidget_activated(QDate date);
+    private slots:
+        void on_calendarWidget_activated(QDate date);
 };
 
 #endif // GAMEVIEWER_H

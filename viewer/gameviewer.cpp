@@ -32,4 +32,17 @@ void GameViewer::init()
      layout->addWidget(this->calendar());
      layout->addWidget(this->table());
      this->centralWidget()->setLayout(layout);
+
+     stateLabel = new QLabel();
+     this->statusBar()->addWidget(stateLabel);
+
+     connect(this, SIGNAL(SetStatusOnForm(const QString&)), this, SLOT(setStatusOnForm(const QString&)), Qt::UniqueConnection);
+
+     setStatus(tr("Select day"));
+}
+
+void GameViewer::setStatusOnForm(const QString &status)
+{
+    qDebug()<<"Status changed to "<<status;
+    stateLabel->setText(status);
 }
