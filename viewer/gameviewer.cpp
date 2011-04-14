@@ -16,7 +16,7 @@ GameViewer::~GameViewer()
     delete ui;
 }
 
-void GameViewer::on_calendarWidget_activated(QDate date)
+void GameViewer::on_calendarWidget_activated(const QDate &date)
 {
     qDebug()<<"New date"<<":"<<date;
     emit GamingDaySelected(date);
@@ -27,7 +27,7 @@ void GameViewer::init()
      this->setCalendar(new QCalendarWidget(this));
      calendar()->setFirstDayOfWeek(Qt::DayOfWeek(1));;
      this->setTable(new QTableView(this));
-     connect(this->calendar(), SIGNAL(activated(QDate)), SLOT(on_calendarWidget_activated(QDate)));
+     connect(calendar(), SIGNAL(activated(const QDate &)), this, SLOT(on_calendarWidget_activated(const QDate &)));
 
      layout->addWidget(this->calendar());
      layout->addWidget(this->table());
@@ -38,7 +38,7 @@ void GameViewer::init()
 
      connect(this, SIGNAL(SetStatusOnForm(const QString&)), this, SLOT(setStatusOnForm(const QString&)), Qt::UniqueConnection);
 
-     setStatus(tr("Select day"));
+     setStatus(tr("Select day"));     
 }
 
 void GameViewer::setStatusOnForm(const QString &status)

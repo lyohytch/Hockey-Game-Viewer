@@ -21,7 +21,7 @@ class DownKhlRuGamingMonth : public DownloaderKhlRu
         DownKhlRuGamingMonth(QObject* parent = 0, const QString& siteName = "www.khl.ru") :
                 DownloaderKhlRu(parent, siteName)
         {
-            setInterval(10000);
+            setInterval(-1);
         }
         virtual void run();
     protected:

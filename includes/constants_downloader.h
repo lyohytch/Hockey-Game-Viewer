@@ -11,6 +11,7 @@ const QString KhlRuUrl("http://www.khl.ru/");
 
 //To config for www.khl.ru
 const QString GameMonth("calendar/");
+const QString CurrentGameDay("current/");
 
 const QString Regular_1("160"); //Season 2008-2009
 const QString PlayOffs_1("165");

@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/parsing">
         <file>Resources/requests/gamingmonth.xq</file>
+        <file>Resources/requests/getcurrentdaymatches.xq</file>
     </qresource>
     <qresource prefix="/reading">
         <file>Resources/requests/getmatchesforday.xq</file>
         <file>Resources/requests/getcountmatchesforday.xq</file>
+        <file>Resources/requests/gettodaymatches.xq</file>
     </qresource>
 </RCC>

@@ -31,6 +31,7 @@ void QThreadPeriodRunner::run()
     QTimerLauncher* timer =  new QTimerLauncher();
     timer->setOperation(operation());
     qDebug() << "Interval: " << operation()->interval();
+    connect(operation(), SIGNAL(endOperation()), this, SLOT(stopExec()), Qt::UniqueConnection);
     operation()->run();
     timer->startTimer(operation()->interval());
     timers.append(timer);

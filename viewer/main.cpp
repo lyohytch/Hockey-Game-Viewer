@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+#include <QtNetwork/QNetworkProxy>
 #include "gameviewer.h"
 
 int main(int argc, char *argv[])

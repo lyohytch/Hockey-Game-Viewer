@@ -3,18 +3,19 @@
 #include <QFile>
 
 #include "rwkhlru.h"
-class RWKhlRuGamingDay:public RWKhlRu
+#include "constants_downloader.h"
+class RWKhlRuGamingMonth: public RWKhlRu
 {
-public:
-    RWKhlRuGamingDay(QObject *parent = 0, const QString &targetSite = "www.khl.ru") :RWKhlRu(parent, targetSite) {}
-    virtual void run();
+    public:
+        RWKhlRuGamingMonth(QObject* parent = 0, const QString& targetSite = "www.khl.ru") : RWKhlRu(parent, targetSite) {}
+        virtual void run();
 
-protected:
-    QString savedParsedFile;
-    void setSavedParsedFilename();
+    protected:
+        QString savedParsedFile;
+        void setSavedParsedFilename();
 
-private:
-QStringList getDataFromParsedXML(QFile *source, const QString &resfname);
+    private:
+        QStringList getDataFromParsedXML(QFile* source, const QString& resfname);
 };
 
 #endif // RWKHLRUGAMINGDAY_H

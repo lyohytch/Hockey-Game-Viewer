@@ -9,6 +9,7 @@ class IRWData : public IOperation
         Q_OBJECT
         Q_PROPERTY(QStringList teams READ teams WRITE setTeams)
         Q_PROPERTY(QStringList counts READ counts WRITE setCounts)
+        Q_PROPERTY(QStringList states READ states WRITE setStates)
     public:
         explicit IRWData(QObject* parent = 0, const QString& typeName = 0): IOperation(parent, typeName) {}
         QStringList teams()
@@ -19,10 +20,15 @@ class IRWData : public IOperation
         {
             return _counts;
         }
+        QStringList states()
+        {
+            return _states;
+        }
 
     signals:
         void FileNotExistToReading();
-        void ReadingComplete();
+        void ReadingAnyDayComplete();
+        void ReadingTodayResultsComplete();
     protected slots:
         void setTeams(const QStringList &copyTeams)
         {
@@ -32,10 +38,15 @@ class IRWData : public IOperation
         {
             _counts = copyCounts;
         }
+        void setStates(const QStringList &copyStates)
+        {
+            _states = copyStates;
+        }
 
     private:
         QStringList _teams;
         QStringList _counts;
+        QStringList _states;
 
 };
 

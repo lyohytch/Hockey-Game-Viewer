@@ -2,11 +2,13 @@ TARGET = parser
 HEADERS += \
     iparser.h \
     parserkhlru.h \
-    parsegamingmonth.h
+    parsegamingmonth.h \
+    parserkhlrugamingday.h
 
 SOURCES += \
     parserkhlru.cpp \
-    parsegamingmonth.cpp
+    parsegamingmonth.cpp \
+    parserkhlrugamingday.cpp
 
 QT += xmlpatterns
 

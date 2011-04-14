@@ -38,6 +38,10 @@ void ParseKhlRuGamingMonth::run()
                 }
                 output.close();
             }
+            else
+            {
+                qDebug()<<"Can not open file for writing parsed data";
+            }
             file.close();
         }
         else
@@ -50,7 +54,7 @@ void ParseKhlRuGamingMonth::run()
         qDebug()<<"Can't open resource file";
     }
 
-    emit parsedGamingMonth();
+    emit parsedGamingDay();
     emit endOperation();
 }
 

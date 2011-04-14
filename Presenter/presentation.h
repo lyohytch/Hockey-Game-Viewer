@@ -24,10 +24,13 @@ signals:
 
 private slots:
     void gamingDaySelected(const QDate & gameDay);
-    void downloadFinished();
-    void parsingFinished();
+    void downloadMonthResultsFinished(int error);
+    void downloadDayResultsFinished(int error);
+    void parsingMonthFinished();
+    void parsingDayFinished();
     void EmptyReadingFile();
     void fillMatchesTable();
+    void fillMatchesTodayTable();
 private:
     IView * view;
     OperationPool *downloaders;

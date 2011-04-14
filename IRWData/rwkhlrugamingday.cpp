@@ -4,10 +4,9 @@
 #include <QtXmlPatterns/QXmlFormatter>
 
 #include "constants.h"
-#include "constants_downloader.h"
 #include "rwkhlrugamingday.h"
 
-void RWKhlRuGamingDay::run()
+void RWKhlRuGamingMonth::run()
 {
     //TODO!!
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId()<<"Date: "<<date().toString("dd.MM.yy").toAscii();
@@ -26,7 +25,7 @@ void RWKhlRuGamingDay::run()
 
         setTeams(teams);
         setCounts(counts);
-        emit ReadingComplete();
+        emit ReadingAnyDayComplete();
         emit endOperation();
     }
     else
@@ -36,8 +35,7 @@ void RWKhlRuGamingDay::run()
     }
 }
 
-
-QStringList RWKhlRuGamingDay::getDataFromParsedXML(QFile *source, const QString &resfname)
+QStringList RWKhlRuGamingMonth::getDataFromParsedXML(QFile *source, const QString &resfname)
 {
     QFile queryFile(resfname);
     QStringList retList = QStringList();
@@ -68,7 +66,7 @@ QStringList RWKhlRuGamingDay::getDataFromParsedXML(QFile *source, const QString 
     return retList;
 }
 
-void RWKhlRuGamingDay::setSavedParsedFilename()
+void RWKhlRuGamingMonth::setSavedParsedFilename()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     qDebug() << "Date:" << date();
@@ -78,7 +76,6 @@ void RWKhlRuGamingDay::setSavedParsedFilename()
     {
         if (isRegular(date(), season) || isPlayOffs(date(), season))
         {
-
             savedParsedFile += QString::number(season.yearStart) + "-" + QString::number(season.yearEnd) + "/" +
                                QString::number(date().month()) + ".xml";
             break;

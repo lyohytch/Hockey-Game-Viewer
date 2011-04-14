@@ -10,6 +10,7 @@ class IParser : public IOperation
         IParser(QObject* parent = 0, const QString& siteName = 0) : IOperation(parent, siteName) {}
     signals:
         void parsedGamingMonth();
+        void parsedGamingDay();
 };
 
 #endif // IPARSER_H

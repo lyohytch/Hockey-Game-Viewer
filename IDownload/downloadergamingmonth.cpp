@@ -69,16 +69,11 @@ void DownKhlRuGamingMonth::launchDownloadingProcess()
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
 
     QNetworkAccessManager *mgr = new QNetworkAccessManager();
-    mgr->setProxy(QNetworkProxy(QNetworkProxy::ProxyType(this->typeProxy()),
-                                this->hostProxy(), this->portProxy(),
-                                this->userProxy(), this->pwdProxy()));
-
 
     KhlRuGamingMonthReceiver* receiver = new KhlRuGamingMonthReceiver(mgr,&file, urlForDownload);
 
-    qDebug()<<"1:"<<connect(receiver, SIGNAL(finished()), this, SIGNAL(fetchedGamingMonth()), Qt::QueuedConnection);
-    qDebug()<<"2:"<<connect(receiver, SIGNAL(finished()), this, SIGNAL(endOperation()), Qt::QueuedConnection);
-
+    qDebug()<<"1:"<<connect(receiver, SIGNAL(finished(int)), this, SIGNAL(fetchedGamingMonth(int)), Qt::QueuedConnection);
+    qDebug()<<"2:"<<connect(receiver, SIGNAL(finished(int)), this, SIGNAL(endOperation()), Qt::QueuedConnection);
     qDebug()<<"Launch ended";
 }
 
@@ -90,15 +85,19 @@ KhlRuGamingMonthReceiver::KhlRuGamingMonthReceiver(QNetworkAccessManager *_mgr, 
 
     qDebug()<<"3:"<<connect(reply, SIGNAL(finished()), this, SLOT(httpFinished()), Qt::DirectConnection);
     qDebug()<<"4:"<<connect(reply, SIGNAL(readyRead()), this, SLOT(httpReadyRead()), Qt::DirectConnection);
+   // qDebug()<<"5"<<connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(httpFinished()), Qt::DirectConnection );
+   // qDebug()<<"5"<<connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(httpFinished()), Qt::DirectConnection );
 }
 
 void KhlRuGamingMonthReceiver::httpFinished()
 {
     qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
+    QNetworkReply::NetworkError err;
     QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-    if (reply->error())
+    if (err = reply->error())
     {
         qDebug() << reply->errorString();
+
     }
     else if (!redirectionTarget.isNull())
     {
@@ -117,7 +116,7 @@ void KhlRuGamingMonthReceiver::httpFinished()
     file->close();
     this->deleteLater();
 
-    emit finished();
+    emit finished(err);
 }
 
 void KhlRuGamingMonthReceiver::httpReadyRead()
