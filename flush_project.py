@@ -28,16 +28,15 @@ def removeBuildFolders(tmpDir):
 if __name__ == '__main__':
     print 'Flushing project started.'
     dirList = os.listdir(currDir)
-    buildDirList = os.listdir(buildDir)
-    removeMakeFiles(currDir)
-    for dirname in dirList:
-        removeMakeFiles(currDir + dirname)
+    try:
+        buildDirList = os.listdir(buildDir)       
+        removeMakeFiles(currDir)
+        for dirname in dirList:
+            removeMakeFiles(currDir + dirname)
     
-    for dirname in buildDirList:
-        removeBuildFolders(buildDir + dirname)
-    
-    print 'Project successfully flushed.'
-            
-
- 
-    
+        for dirname in buildDirList:
+            removeBuildFolders(buildDir + dirname)
+    except Exception:
+        pass
+    finally:
+        print 'Project successfully flushed.'

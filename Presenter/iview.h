@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QTableView>
-#include <QCalendarWidget>
+#include <QDateEdit>
 #include <QDate>
 
 class IView : public QMainWindow
@@ -19,7 +19,7 @@ class IView : public QMainWindow
         Q_PROPERTY(QString pwdProxy READ pwdProxy WRITE setPwdProxy)
 
         Q_PROPERTY(QTableView *table READ table WRITE setTable)
-        Q_PROPERTY(QCalendarWidget *calendar READ calendar WRITE setCalendar)
+        Q_PROPERTY(QDateEdit *calendar READ calendar WRITE setCalendar)
 
         Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY SetStatusOnForm)
     public:
@@ -56,7 +56,7 @@ class IView : public QMainWindow
             return _table;
         }
 
-        QCalendarWidget *calendar() const
+        QDateEdit *calendar() const
         {
             return _calendar;
         }
@@ -100,7 +100,7 @@ class IView : public QMainWindow
         {
             _table = copyTable;
         }
-        void setCalendar(QCalendarWidget *copyCalendar)
+        void setCalendar(QDateEdit *copyCalendar)
         {
             _calendar = copyCalendar;
         }
@@ -121,7 +121,7 @@ class IView : public QMainWindow
         QString _pwdProxy;
 
         QTableView *_table;
-        QCalendarWidget *_calendar;
+        QDateEdit *_calendar;
 
         QString _status;
 };

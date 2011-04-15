@@ -16,25 +16,27 @@ GameViewer::~GameViewer()
     delete ui;
 }
 
-void GameViewer::on_calendarWidget_activated(const QDate &date)
+void GameViewer::DateChanged(const QDate &date)
 {
     qDebug()<<"New date"<<":"<<date;
     emit GamingDaySelected(date);
 }
 void GameViewer::init()
 {
-     QVBoxLayout *layout = new QVBoxLayout(this);
-     this->setCalendar(new QCalendarWidget(this));
-     calendar()->setFirstDayOfWeek(Qt::DayOfWeek(1));;
-     this->setTable(new QTableView(this));
-     connect(calendar(), SIGNAL(activated(const QDate &)), this, SLOT(on_calendarWidget_activated(const QDate &)));
-
-     layout->addWidget(this->calendar());
-     layout->addWidget(this->table());
-     this->centralWidget()->setLayout(layout);
+     QVBoxLayout *vlayout = new QVBoxLayout();
+     setCalendar(new QDateEdit(this));
+     calendar()->setCalendarPopup(true);
+     calendar()->setDate(QDate::currentDate());
+     qDebug();
+     setTable(new QTableView(this));
+     connect(calendar(), SIGNAL(dateChanged(const QDate&)), this, SLOT(DateChanged(const QDate&)), Qt::DirectConnection);
+     qDebug();
+     vlayout->addWidget(calendar());
+     vlayout->addWidget(table());
+     centralWidget()->setLayout(vlayout);
 
      stateLabel = new QLabel();
-     this->statusBar()->addWidget(stateLabel);
+     statusBar()->addWidget(stateLabel);
 
      connect(this, SIGNAL(SetStatusOnForm(const QString&)), this, SLOT(setStatusOnForm(const QString&)), Qt::UniqueConnection);
 

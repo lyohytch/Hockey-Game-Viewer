@@ -34,7 +34,7 @@ presentation::presentation(IView* _view)
 {
     view = _view;
     QNetworkProxy proxy;
-    proxy.setType(QNetworkProxy::HttpProxy);
+    proxy.setType(QNetworkProxy::NoProxy);
     proxy.setHostName("172.18.0.1");
     proxy.setPort(3128);
     proxy.setUser(QString());

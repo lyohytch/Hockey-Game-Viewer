@@ -25,7 +25,7 @@ class GameViewer : public IView
         void init();
 
     private slots:
-        void on_calendarWidget_activated(const QDate &date);
+        void DateChanged(const QDate &date);
 };
 
 
