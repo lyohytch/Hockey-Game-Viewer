@@ -37,6 +37,7 @@ void RWKhlRuGamingMonth::run()
 
 QStringList RWKhlRuGamingMonth::getDataFromParsedXML(QFile *source, const QString &resfname)
 {
+    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
     QFile queryFile(resfname);
     QStringList retList = QStringList();
     source->open(QIODevice::ReadOnly);

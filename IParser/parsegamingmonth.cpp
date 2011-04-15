@@ -54,7 +54,7 @@ void ParseKhlRuGamingMonth::run()
         qDebug()<<"Can't open resource file";
     }
 
-    emit parsedGamingDay();
+    emit parsedGamingMonth();
     emit endOperation();
 }
 

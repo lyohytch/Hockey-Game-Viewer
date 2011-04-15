@@ -32,7 +32,7 @@ void RWKhlRuGamingDay::run()
     {
         //Open query file:Read teams
         QStringList rawData  = getDataFromParsedXML(source, ":reading/Resources/requests/gettodaymatches.xq");
-        for(int i = 0; i < rawData.count(); i = i + 3)
+        for(int i = 0; i < rawData.count(); i = i + 4)
         {
             teams.append(rawData[i]);
             counts.append(rawData[i + 1]);

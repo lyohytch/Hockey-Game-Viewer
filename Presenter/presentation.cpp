@@ -20,10 +20,15 @@
 //Runner
 #include "qthreadrunner.h"
 
-
+//TODO: разбить по модулям, имена файлов = имена классов
+//TODO: компрессия временных данных?
+//TODO: сделать календарь поменьше(как в GNOME)
 //TODO: файлы должны писаться только одним объектом, а читаться могут несколькими
 //TODO:  ускорить работу парсера(новый механизм?) - отдельно счета и команды
 //TODO: прокси для аппликейшена
+//TODO: у будущих матчей выставить статус в читальщике
+//TODO: сделать проверку времени изменения файла - последовательность действий при этом
+//TODO: форму с настройками: прокси, времени обновления сегодняшней инфы(обновление когда матч начался, и когда матч ещё не начался)
 
 presentation::presentation(IView* _view)
 {
@@ -70,7 +75,7 @@ void presentation::connectOnEvents()
             SLOT(parsingMonthFinished()), Qt::QueuedConnection);
     connect(readers->getOperationByName("www.khl.ru"), SIGNAL(FileNotExistToReading()), this,
             SLOT(EmptyReadingFile()), Qt::QueuedConnection);
-    connect(readers->getOperationByName("www.khl.ru"), SIGNAL(ReadingComplete()), this,
+    connect(readers->getOperationByName("www.khl.ru"), SIGNAL(ReadingAnyDayComplete()), this,
             SLOT(fillMatchesTable()), Qt::QueuedConnection);
     //Day
     connect(downloaders->getOperationByName("www.khl.ru-day"), SIGNAL(fetchedGamingDay(int)), this,
@@ -86,7 +91,7 @@ void presentation::downloadDayResultsFinished(int err)
     if (err == QNetworkReply::NoError)
     {
         qDebug()<<"Current day information downloaded. Start parser";
-        view->setStatus(tr("Parsing downloaded matches info for current day") + selectedDay.toString("dd.MM.yy"));
+        view->setStatus(tr("Parsing downloaded matches info for current day : ") + selectedDay.toString("dd.MM.yy"));
         parsers->getOperationByName("www.khl.ru-day")->setDate(selectedDay);
         runners->startRunnerByName("www.khl.ru-parser-day");
     }
@@ -99,10 +104,49 @@ void presentation::downloadDayResultsFinished(int err)
 void presentation::fillMatchesTodayTable()
 {
     qDebug()<<"Reading complete";
-    bool mayShowResults = readers->getOperationByName("www.khl.ru")->date() == selectedDay;
+    bool mayShowResults = readers->getOperationByName("www.khl.ru-day")->date() == selectedDay;
     //filtering by date
     if (mayShowResults)
     {
+        view->setStatus(tr("States of current matches were updated"));
+        qDebug()<<view->status();
+        tableModel->clear();
+        tableModel->setHorizontalHeaderLabels(QStringList() << tr("Home") << tr("Away") << tr("Count") << tr("State"));
+        QStringList teams = ((IRWData*)(readers->getOperationByName("www.khl.ru-day")))->teams();
+        QStringList counts = ((IRWData*)(readers->getOperationByName("www.khl.ru-day")))->counts();
+        QStringList states = ((IRWData*)(readers->getOperationByName("www.khl.ru-day")))->states();
+        qDebug()<<"Teams"<<":"<<teams;
+        qDebug()<<"Counts"<<":"<<counts;
+        qDebug()<<"States"<<":"<<states;
+        int cteam = teams.count();
+        for(int i = 0; i < cteam; ++i)
+        {
+            QList<QStandardItem*> row;
+            qDebug() << "home" << ":" << (teams[i]).section("-", 0, 0);
+            qDebug() << "away" << ":" << (teams[i]).section("-", 1, 1);
+            QStandardItem* homeitem = new QStandardItem((teams[i]).section("-", 0, 0));
+            QStandardItem* awayitem = new QStandardItem((teams[i]).section("-", 1, 1));
+
+
+            QStandardItem* countitem = new QStandardItem(counts[i]);
+            QStandardItem* stateitem = new QStandardItem(states[i]);
+            homeitem->setEditable(false);
+            awayitem->setEditable(false);
+            countitem->setEditable(false);
+            stateitem->setEditable(false);
+
+
+            row.append(homeitem);
+            row.append(awayitem);
+            row.append(countitem);
+            row.append(stateitem);
+
+            tableModel->appendRow(row);
+        }
+        view->table()->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);;
+        view->table()->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+        view->table()->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
+        view->table()->horizontalHeader()->setResizeMode(3, QHeaderView::Stretch);
 
     }
     else
@@ -182,6 +226,8 @@ void presentation::gamingDaySelected(const QDate& gameDay)
     if ( gameDay != QDate::currentDate() )
     {
         qDebug()<<"Loading past information";
+        qDebug()<<"Stopping update for current dat";
+        runners->getRunner("www.khl.ru-downloader-day")->stopExec();
         readers->getOperationByName("www.khl.ru")->setDate(selectedDay);
         runners->startRunnerByName("www.khl.ru-reader");
     }
