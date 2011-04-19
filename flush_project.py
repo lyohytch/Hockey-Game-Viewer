@@ -5,6 +5,8 @@ import shutil
 
 buildDir = './build/'
 currDir = './'
+domainDir = './Domain/'
+platformKhlRuDir = './Platforms/KhlRu/'
 
 def removeMakeFiles(mkfDir):
     if os.path.isdir(mkfDir):
@@ -28,10 +30,16 @@ def removeBuildFolders(tmpDir):
 if __name__ == '__main__':
     print 'Flushing project started.'
     dirList = os.listdir(currDir)
+    dirPlatform  = os.listdir(platformKhlRuDir)
+    dirDomain  = os.listdir(domainDir)
     buildDirList = os.listdir(buildDir)
     removeMakeFiles(currDir)
     for dirname in dirList:
         removeMakeFiles(currDir + dirname)
+    for dirname in dirPlatform:
+        removeMakeFiles(platformKhlRuDir + dirname)
+    for dirname in dirDomain:
+        removeMakeFiles(domainDir + dirname)
     
     for dirname in buildDirList:
         removeBuildFolders(buildDir + dirname)

@@ -1,7 +1,7 @@
 #ifndef DOWNLOADERGAMINGMONTH_H
 #define DOWNLOADERGAMINGMONTH_H
 
-#include "downloaderkhlru.h"
+#include "common.h"
 
 class KhlRuGamingMonthReceiver : public IReceiver
 {

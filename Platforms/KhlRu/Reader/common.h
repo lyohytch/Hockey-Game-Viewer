@@ -5,7 +5,8 @@
 #include <QDateTime>
 #include <QThread>
 
-#include "irwdata.h"
+#include "ireader.h"
+
 class RWKhlRu:public IRWData
 {
 public:

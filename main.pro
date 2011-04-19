@@ -1,12 +1,8 @@
 TEMPLATE = subdirs
-CONFIG += orderes
-SUBDIRS += PlayerInfo \
-           CommandInfo \
-           Match \
-           GamingDay \
-           IOperation \
-           IParser \
-           IDownload \
-           IRWData \
-           Presenter \
-           viewer
+CONFIG += ordered
+SUBDIRS +=  Domain/Operations \
+            Platforms/KhlRu/Downloader \
+            Platforms/KhlRu/Parser \
+            Platforms/KhlRu/Reader \
+            Presenter \
+            Viewer

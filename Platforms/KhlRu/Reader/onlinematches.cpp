@@ -5,7 +5,7 @@
 
 #include "constants.h"
 #include "constants_downloader.h"
-#include "rwkhlrugamingday_tmp.h"
+#include "onlinematches.h"
 
 /*TODO: 1. Много времени до начала матча
           - Полей chet и chetmore расширенный нет

@@ -1,7 +1,7 @@
 #ifndef PARSERKHLRUGAMINGDAY_H
 #define PARSERKHLRUGAMINGDAY_H
 
-#include "parserkhlru.h"
+#include "common.h"
 
 class ParserKhlRuGamingDay : public ParserKhlRu
 {

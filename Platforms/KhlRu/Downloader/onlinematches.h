@@ -1,7 +1,7 @@
 #ifndef DOWNLOADERKHLRUGAMINGDAY_H
 #define DOWNLOADERKHLRUGAMINGDAY_H
 
-#include "downloaderkhlru.h"
+#include "common.h"
 
 class KhlRuGamingDayReceiver : public IReceiver
 {

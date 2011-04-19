@@ -3,7 +3,7 @@
 #include <QtXmlPatterns/QXmlFormatter>
 #include <QBuffer>
 
-#include "parsegamingmonth.h"
+#include "pastmatches.h"
 #include "constants_downloader.h"
 //#include "gamingday.h"
 

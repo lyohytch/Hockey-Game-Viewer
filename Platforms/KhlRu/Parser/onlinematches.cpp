@@ -3,7 +3,7 @@
 #include <QtXmlPatterns/QXmlFormatter>
 #include <QDir>
 
-#include "parserkhlrugamingday.h"
+#include "onlinematches.h"
 #include "constants_downloader.h"
 
 void ParserKhlRuGamingDay::run()
