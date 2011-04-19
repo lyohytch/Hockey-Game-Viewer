@@ -1,14 +1,17 @@
-INCLUDEPATH += . .. ../includes ../IOperation
+INCLUDEPATH += . \
+               .. \
+               ../includes
+
 OTHER_FILES += ../includes/constants.h \
                ../includes/constants_downloader.h
 TEMPLATE = lib
-#CONFIG += staticlib
+
 QT += core
-unix:DESTDIR = ../build/bin
-win32:DESTDIR = ../build/lib/$$TARGET
-win32:DLLDESTDIR = ../build/bin
-MOC_DIR = ../build/mocs/$$TARGET
-OBJECTS_DIR = ../build/objs/$$TARGET
+unix:DESTDIR = ../../build/bin
+win32:DESTDIR = ../../build/lib/$$TARGET
+win32:DLLDESTDIR = ../../build/bin
+MOC_DIR = ../../build/mocs/$$TARGET
+OBJECTS_DIR = ../../build/objs/$$TARGET
 
 ## CONFIG settings(debug)
 CONFIG += debug

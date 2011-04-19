@@ -2,7 +2,7 @@
 #define RWKHLRUGAMINGDAY_TMP_H
 #include <QFile>
 
-#include "rwkhlru.h"
+#include "common.h"
 
 class RWKhlRuGamingDay: public RWKhlRu
 {

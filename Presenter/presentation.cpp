@@ -6,16 +6,16 @@
 
 #include "presentation.h"
 //Downloaders
-#include "downloadergamingmonth.h"
-#include "downloaderkhlrugamingday.h"
+#include "Platforms/KhlRu/Downloader/pastmatches.h"
+#include "Platforms/KhlRu/Downloader/onlinematches.h"
 
 //Parsers
-#include "parsegamingmonth.h"
-#include "parserkhlrugamingday.h"
+#include "Platforms/KhlRu/Parser/pastmatches.h"
+#include "Platforms/KhlRu/Parser/onlinematches.h"
 
 //Readers
-#include "rwkhlrugamingday.h"
-#include "rwkhlrugamingday_tmp.h"
+#include "Platforms/KhlRu/Reader/pastmatches.h"
+#include "Platforms/KhlRu/Reader/onlinematches.h"
 
 //Runner
 #include "qthreadrunner.h"

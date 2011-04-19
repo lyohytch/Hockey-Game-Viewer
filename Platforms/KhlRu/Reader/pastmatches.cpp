@@ -4,7 +4,7 @@
 #include <QtXmlPatterns/QXmlFormatter>
 
 #include "constants.h"
-#include "rwkhlrugamingday.h"
+#include "pastmatches.h"
 
 void RWKhlRuGamingMonth::run()
 {

@@ -2,7 +2,7 @@
 #define RWKHLRUGAMINGDAY_H
 #include <QFile>
 
-#include "rwkhlru.h"
+#include "common.h"
 #include "constants_downloader.h"
 class RWKhlRuGamingMonth: public RWKhlRu
 {

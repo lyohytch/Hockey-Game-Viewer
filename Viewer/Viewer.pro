@@ -19,17 +19,20 @@ FORMS    += gameviewer.ui
 
 DESTDIR = ../build/bin
 
-INCLUDEPATH += ../IDownload \
-               ../IParser \
-               ../Presenter \
-               ../includes \
-               ../IOperation
+INCLUDEPATH += . \
+               .. \
+               ../Domain/includes \
+               ../Domain/Operations \
+               ../Platforms/KhlRu/Downloader \
+               ../Platforms/KhlRu/Parser \
+               ../Platforms/KhlRu/Reader \
+               ../Presenter
 
 MOC_DIR = ../build/mocs/$$TARGET
 OBJECTS_DIR = ../build/objs/$$TARGET
 
 QT += xmlpatterns
-LIBS += -L../build/bin -lpresenter -lparser -ldownloader -lioperation -lrwdata
+LIBS += -L../build/bin -lpresenter -lparser -ldownloader -loperations -lreader
 
 RESOURCES += ../resources.qrc
 

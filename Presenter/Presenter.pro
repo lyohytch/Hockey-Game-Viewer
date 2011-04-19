@@ -11,5 +11,4 @@ SOURCES += \
     qthreadrunner.cpp \
     qthreadrunnerpool.cpp
 
-include ( ../common.pri )
 include ( ../presenter.pri )
