@@ -3,6 +3,7 @@
 #include <QLabel>
 #include "iview.h"
 #include "presentation.h"
+#include "gameviewersettings.h"
 
 namespace Ui
 {
@@ -16,12 +17,14 @@ class GameViewer : public IView
     public:
         explicit GameViewer(QWidget* parent = 0);
         ~GameViewer();
+        void closeEvent(QCloseEvent *);
     protected slots:
         virtual void setStatusOnForm(const QString& status);
 
     private:
         Ui::GameViewer* ui;
         QLabel *stateLabel;
+        GameViewerSettings *viewerSettings;
         void init();
 
     private slots:

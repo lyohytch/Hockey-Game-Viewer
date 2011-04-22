@@ -4,7 +4,8 @@ HEADERS += \
     iview.h \
     presentation.h \
     qthreadrunner.h \
-    qthreadrunnerpool.h
+    qthreadrunnerpool.h \
+    IViewSettings.h
 
 SOURCES += \
     presentation.cpp \

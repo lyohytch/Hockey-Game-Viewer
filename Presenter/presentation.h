@@ -12,6 +12,7 @@
 #include <QVBoxLayout>
 
 #include "iview.h"
+#include "IViewSettings.h"
 #include "operationpool.h"
 #include "qthreadrunnerpool.h"
 
@@ -19,7 +20,7 @@ class presentation: public QObject
 {
     Q_OBJECT
 public:
-    explicit presentation(IView * _view);
+    explicit presentation(IView * _view, IViewSettings *_viewSettings);
 signals:
 
 private slots:
@@ -31,8 +32,10 @@ private slots:
     void EmptyReadingFile();
     void fillMatchesTable();
     void fillMatchesTodayTable();
+    void proxySettingsChanged();
 private:
     IView * view;
+    IViewSettings *viewSettings;
     OperationPool *downloaders;
     OperationPool *parsers;
     OperationPool *readers;

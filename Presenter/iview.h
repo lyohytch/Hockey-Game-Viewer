@@ -12,12 +12,6 @@ class IView : public QMainWindow
 
         Q_PROPERTY(QString downloaderName READ downloaderName WRITE setdownloaderName)
 
-        Q_PROPERTY(int typeProxy READ  typeProxy WRITE setTypeProxy)
-        Q_PROPERTY(QString hostProxy READ hostProxy WRITE setHostProxy)
-        Q_PROPERTY(int portProxy READ portProxy WRITE setPortProxy)
-        Q_PROPERTY(QString userProxy READ userProxy WRITE setUserProxy)
-        Q_PROPERTY(QString pwdProxy READ pwdProxy WRITE setPwdProxy)
-
         Q_PROPERTY(QTableView *table READ table WRITE setTable)
         Q_PROPERTY(QDateEdit *calendar READ calendar WRITE setCalendar)
 
@@ -28,27 +22,6 @@ class IView : public QMainWindow
         QString downloaderName() const
         {
             return _downloaderName;
-        }
-
-        int typeProxy() const
-        {
-            return _typeProxy;
-        }
-        QString hostProxy()const
-        {
-            return _hostProxy;
-        }
-        int portProxy() const
-        {
-            return _portProxy;
-        }
-        QString userProxy() const
-        {
-            return _userProxy;
-        }
-        QString pwdProxy() const
-        {
-            return _pwdProxy;
         }
 
         QTableView *table() const
@@ -75,26 +48,6 @@ class IView : public QMainWindow
             _downloaderName = copySite;
         }
 
-        void setTypeProxy(int type)
-        {
-            _typeProxy = type;
-        }
-        void setHostProxy(const QString& host)
-        {
-            _hostProxy = host;
-        }
-        void setPortProxy(int port)
-        {
-            _portProxy = port;
-        }
-        void setUserProxy(const QString& user)
-        {
-            _userProxy = user;
-        }
-        void setPwdProxy(const QString& pwd)
-        {
-            _pwdProxy = pwd;
-        }
 
         void setTable(QTableView *copyTable)
         {
@@ -113,12 +66,6 @@ class IView : public QMainWindow
 
     private:
         QString _downloaderName;
-
-        int _typeProxy;
-        QString _hostProxy;
-        int _portProxy;
-        QString _userProxy;
-        QString _pwdProxy;
 
         QTableView *_table;
         QDateEdit *_calendar;

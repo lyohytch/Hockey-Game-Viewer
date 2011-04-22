@@ -8,7 +8,7 @@ GameViewer::GameViewer(QWidget *parent) :
 {
     ui->setupUi(this);
     init();
-    new presentation(this);
+    new presentation(this, viewerSettings);
 }
 
 GameViewer::~GameViewer()
@@ -40,11 +40,21 @@ void GameViewer::init()
 
      connect(this, SIGNAL(SetStatusOnForm(const QString&)), this, SLOT(setStatusOnForm(const QString&)), Qt::UniqueConnection);
 
-     setStatus(tr("Select day"));     
+     setStatus(tr("Select day"));
+
+     viewerSettings = new GameViewerSettings();
+     viewerSettings->prepareSettings();
+     connect(ui->action_Preferences, SIGNAL(triggered()),viewerSettings, SLOT(show()), Qt::UniqueConnection);
 }
 
 void GameViewer::setStatusOnForm(const QString &status)
 {
     qDebug()<<"Status changed to "<<status;
     stateLabel->setText(status);
+}
+
+void GameViewer::closeEvent(QCloseEvent *)
+{
+    qDebug()<<"Closing Main window";
+    viewerSettings->close();
 }

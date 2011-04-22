@@ -18,6 +18,13 @@
         3. Матч идёт
         4. Матч закончился
  */
+enum Fields
+{
+    TEAMS = 0,
+    COUNTS,
+    BEGIN,
+    COMMENT = 3
+};
 void RWKhlRuGamingDay::run()
 {
     //TODO!!
@@ -34,11 +41,15 @@ void RWKhlRuGamingDay::run()
         QStringList rawData  = getDataFromParsedXML(source, ":reading/Resources/requests/gettodaymatches.xq");
         for(int i = 0; i < rawData.count(); i = i + 4)
         {
-            teams.append(rawData[i]);
-            counts.append(rawData[i + 1]);
-            if (!QString(rawData[i+2]).isEmpty())
+            teams.append(rawData[i + TEAMS]);
+            counts.append(rawData[i + COUNTS]);
+            if (!QString(rawData[i+ BEGIN]).isEmpty())
             {
-                states.append(rawData[i+2]);
+                states.append(rawData[i+BEGIN]);
+            }
+            else if ( !QString(rawData[i + COMMENT]).isEmpty() )
+            {
+                states.append(rawData[i + COMMENT]);
             }
         }
         qDebug()<<teams;

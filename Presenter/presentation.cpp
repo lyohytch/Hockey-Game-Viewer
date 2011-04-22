@@ -20,9 +20,9 @@
 //Runner
 #include "qthreadrunner.h"
 
+
 //TODO: разбить по модулям, имена файлов = имена классов
 //TODO: компрессия временных данных?
-//TODO: сделать календарь поменьше(как в GNOME)
 //TODO: файлы должны писаться только одним объектом, а читаться могут несколькими
 //TODO:  ускорить работу парсера(новый механизм?) - отдельно счета и команды
 //TODO: прокси для аппликейшена
@@ -30,16 +30,11 @@
 //TODO: сделать проверку времени изменения файла - последовательность действий при этом
 //TODO: форму с настройками: прокси, времени обновления сегодняшней инфы(обновление когда матч начался, и когда матч ещё не начался)
 
-presentation::presentation(IView* _view)
+presentation::presentation(IView* _view, IViewSettings * _viewSettings)
 {
     view = _view;
-    QNetworkProxy proxy;
-    proxy.setType(QNetworkProxy::NoProxy);
-    proxy.setHostName("172.18.0.1");
-    proxy.setPort(3128);
-    proxy.setUser(QString());
-    proxy.setPassword(QString());
-    QNetworkProxy::setApplicationProxy(proxy);
+
+    viewSettings = _viewSettings;
 
     tableModel = new QStandardItemModel(this);
 
@@ -68,6 +63,9 @@ void presentation::connectOnEvents()
 {
     connect(view, SIGNAL(GamingDaySelected(const QDate&)), this,
             SLOT(gamingDaySelected(const QDate&)), Qt::AutoConnection);
+
+    connect(viewSettings, SIGNAL(ProxySettingsChanged()), this,
+            SLOT(proxySettingsChanged()), Qt::AutoConnection);
     //Month
     connect(downloaders->getOperationByName("www.khl.ru"), SIGNAL(fetchedGamingMonth(int)), this,
             SLOT(downloadMonthResultsFinished(int)), Qt::QueuedConnection);
@@ -84,6 +82,14 @@ void presentation::connectOnEvents()
             SLOT(parsingDayFinished()), Qt::QueuedConnection);
     connect(readers->getOperationByName("www.khl.ru-day"), SIGNAL(ReadingTodayResultsComplete()), this,
             SLOT(fillMatchesTodayTable()), Qt::QueuedConnection);
+}
+
+void presentation::proxySettingsChanged()
+{
+    qDebug();
+    QNetworkProxy::setApplicationProxy(QNetworkProxy(((QNetworkProxy::ProxyType)(viewSettings->typeProxy())),
+                                                     viewSettings->hostProxy(), viewSettings->portProxy(),
+                                                     viewSettings->userProxy(), viewSettings->pwdProxy()) );
 }
 
 void presentation::downloadDayResultsFinished(int err)

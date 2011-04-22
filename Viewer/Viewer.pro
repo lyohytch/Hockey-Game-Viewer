@@ -11,9 +11,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        gameviewer.cpp
+        gameviewer.cpp \
+    gameviewersettings.cpp
 
-HEADERS  += gameviewer.h
+HEADERS  += gameviewer.h \
+    gameviewersettings.h
 
 FORMS    += gameviewer.ui
 

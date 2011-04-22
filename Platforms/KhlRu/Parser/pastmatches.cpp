@@ -6,6 +6,7 @@
 #include "pastmatches.h"
 #include "constants_downloader.h"
 //#include "gamingday.h"
+//TODO: можно объединить реализации для онлайн и прошлых матчей
 
 void ParseKhlRuGamingMonth::run()
 {
