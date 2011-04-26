@@ -7,7 +7,8 @@ INCLUDEPATH += . \
                ../Platforms/KhlRu/Reader
 
 OTHER_FILES += ../Domain/includes/constants.h \
-               ../Domain/includes/constants_downloader.h
+               ../Domain/includes/constants_downloader.h \
+               ../Domain/includes/constants_presenter.h
 
 TEMPLATE = lib
 

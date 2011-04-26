@@ -52,9 +52,3 @@ void GameViewer::setStatusOnForm(const QString &status)
     qDebug()<<"Status changed to "<<status;
     stateLabel->setText(status);
 }
-
-void GameViewer::closeEvent(QCloseEvent *)
-{
-    qDebug()<<"Closing Main window";
-    viewerSettings->close();
-}

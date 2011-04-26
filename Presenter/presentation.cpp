@@ -36,6 +36,8 @@ presentation::presentation(IView* _view, IViewSettings * _viewSettings)
 
     viewSettings = _viewSettings;
 
+    proxySettingsChanged();
+
     tableModel = new QStandardItemModel(this);
 
     view->table()->setModel(tableModel);

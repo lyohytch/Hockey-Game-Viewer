@@ -17,7 +17,6 @@ class GameViewer : public IView
     public:
         explicit GameViewer(QWidget* parent = 0);
         ~GameViewer();
-        void closeEvent(QCloseEvent *);
     protected slots:
         virtual void setStatusOnForm(const QString& status);
 

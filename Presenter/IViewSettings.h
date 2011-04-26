@@ -6,6 +6,8 @@
 #include <QString>
 #include <QVariant>
 
+#include "constants_presenter.h"
+
 class IViewSettings: public QWidget
 {
         Q_OBJECT
@@ -17,17 +19,25 @@ class IViewSettings: public QWidget
         Q_PROPERTY(QString pwdProxy READ pwdProxy WRITE setPwdProxy)
 
     public:
+
         enum Properties
         {
-            TYPE_PROXY,
-            HOST_PROXY,
-            PORT_PROXY,
-            USER_PROXY,
-            PWD_PROXY,
-            UNKNOWN
+            type_proxy = 0,
+            host_proxy,
+            port_proxy,
+            user_proxy,
+            pwd_proxy,
+            unknown
         };
+
         IViewSettings(QWidget* parent = 0) : QWidget(parent)
-        {        }
+        {
+            _typeProxy = 0;
+            _hostProxy = QString();
+            _portProxy = 0;
+            _userProxy = QString();
+            _pwdProxy = QString();
+        }
 
         int typeProxy() const
         {
@@ -60,9 +70,12 @@ class IViewSettings: public QWidget
             return _changedPropNames;
         }
 
-        void propertyChanged(const QString &propertyName)
+        void propertyChanged(const QString& propertyName)
         {
-            _changedPropNames.append(propertyName);
+            if (!_changedPropNames.contains(propertyName))
+            {
+                _changedPropNames.append(propertyName);
+            }
         }
 
         void clearChangedProperties()
@@ -70,73 +83,62 @@ class IViewSettings: public QWidget
             _changedPropNames.clear();
         }
 
-        QString propertyToString(Properties prop)
+        void setPropertyByString(const QString& prop, const QVariant& val)
         {
-            switch (prop)
+            if (!val.isNull())
             {
-                case TYPE_PROXY:
-                    return "TYPE_PROXY";
-                case HOST_PROXY:
-                    return "HOST_PROXY";
-                case PORT_PROXY:
-                    return "PORT_PROXY";
-                case USER_PROXY:
-                    return "USER_PROXY";
-                case PWD_PROXY:
-                    return "PWD_PROXY";
-                default:
-                    return "UNKNOWN";
-            }
-        }
-
-        void setPropertyByString(const QString& prop, const QVariant & val)
-        {
-            if (prop == "TYPE_PROXY")
-            {
-                if (!val.isNull() && val.type() == QVariant::Int)
+                if (prop == TYPE_PROXY)
                 {
                     setTypeProxy(val.toInt());
                 }
-            }
 
-            else if (prop == "HOST_PROXY")
-            {
-                if (!val.isNull() && val.type() == QVariant::String)
+                else if (prop == HOST_PROXY)
                 {
                     setHostProxy(val.toString());
                 }
-            }
 
-            else if (prop == "PORT_PROXY")
-            {
-                if (!val.isNull() && val.type() == QVariant::Int)
+                else if (prop == PORT_PROXY)
                 {
                     setPortProxy(val.toInt());
                 }
-            }
-            else if (prop == "USER_PROXY")
-            {
-                if (!val.isNull() && val.type() == QVariant::String)
+                else if (prop == USER_PROXY)
                 {
                     setUserProxy(val.toString());
                 }
-            }
-            else if (prop == "PWD_PROXY") {
-                if (!val.isNull() && val.type() == QVariant::String)
+                else if (prop == PWD_PROXY)
                 {
                     setPwdProxy(val.toString());
                 }
             }
         }
 
-        int StringToProperty(const QString& prop)
+        int stringToProperty(const QString& prop)
         {
-            if (prop == "TYPE_PROXY") return TYPE_PROXY;
-            else if (prop == "HOST_PROXY") return HOST_PROXY;
-            else if (prop == "PORT_PROXY") return PORT_PROXY;
-            else if (prop == "USER_PROXY") return USER_PROXY;
-            else if (prop == "PWD_PROXY") return PWD_PROXY;
-            else return UNKNOWN;
+            if (prop == TYPE_PROXY) return type_proxy;
+            else if (prop == HOST_PROXY) return host_proxy;
+            else if (prop == PORT_PROXY) return port_proxy;
+            else if (prop == USER_PROXY) return user_proxy;
+            else if (prop == PWD_PROXY) return pwd_proxy;
+            else return unknown;
+        }
+
+        QString propertyToString(Properties prop)
+        {
+            switch (prop)
+            {
+                case type_proxy:
+                    return TYPE_PROXY;
+                case host_proxy:
+                    return HOST_PROXY;
+                case port_proxy:
+                    return PORT_PROXY;
+                case user_proxy:
+                    return USER_PROXY;
+                case pwd_proxy:
+                    return PWD_PROXY;
+                default:
+                    return UNKNOWN;
+            }
         }
 
         void resetToDefaultSettings()
@@ -150,7 +152,7 @@ class IViewSettings: public QWidget
 
         void fillExistedPropertyNames()
         {
-            for (int i = 0; i < UNKNOWN; ++i)
+            for (int i = 0; i < unknown; ++i)
             {
                 _existedPropNames.append(propertyToString((Properties)i));
             }
