@@ -17,8 +17,14 @@ class ParserKhlRu : public IParser
         }
 
         virtual ~ParserKhlRu() {}
-    signals:
-
+    protected:
+        QString savedFilename;
+        QString parsedFilename;
+        QString parsedDir;
+        virtual void setFilenameForParsing() = 0;
+        void parseDownloadedFile(const QString& parseFPath);
+        void executeParsingProcess(const QString& parseFPath);
+        virtual void finishTask();
 };
 
 #endif // PARSERKHLRU_H

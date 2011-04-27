@@ -1,6 +1,4 @@
 #include <QFile>
-#include <QtXmlPatterns/QXmlQuery>
-#include <QtXmlPatterns/QXmlFormatter>
 #include <QDir>
 
 #include "onlinematches.h"
@@ -8,53 +6,13 @@
 
 void ParserKhlRuGamingDay::run()
 {
-    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    setFilenameForParsing();
-    //Open query file
-    QFile queryFile(QString(":parsing/Resources/requests/getcurrentdaymatches.xq"));
-    if (queryFile.open(QIODevice::ReadOnly))
-    {
-        qDebug()<<"Query file opened";
-        QString request = queryFile.readAll();
-        QFile file(savedFilename);
-        if(file.open(QIODevice::ReadOnly))
-        {
-            QFile output(parsedFilename);
-            if ( output.open(QIODevice::ReadWrite) )
-            {
-                QXmlQuery xmlQuery;
-                qDebug()<<"File opened";
-                xmlQuery.bindVariable("document", &file);
-                xmlQuery.setQuery(request);
-                if( !xmlQuery.isValid())
-                {
-                    qDebug()<<"Query isn't valid";
-                }
-                QXmlFormatter formatter(xmlQuery, &output);
-                if( !xmlQuery.evaluateTo(&formatter))
-                {
-                    qDebug()<<"Query can not evaluate!!";
-                }
-                output.close();
-            }
-            else
-            {
-                qDebug()<<"Can not open file for writing parsed data";
-            }
-            file.close();
-        }
-        else
-        {
-            qDebug()<<"Can't open source file";
-        }
-    }
-    else
-    {
-        qDebug()<<"Can't open resource file";
-    }
+    executeParsingProcess(":parsing/Resources/requests/getcurrentdaymatches.xq");
+}
 
+void ParserKhlRuGamingDay::finishTask()
+{
     emit parsedGamingDay();
-    emit endOperation();
+    ParserKhlRu::finishTask();
 }
 
 void ParserKhlRuGamingDay::setFilenameForParsing()

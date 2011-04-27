@@ -6,7 +6,8 @@ HEADERS += \
 
 SOURCES += \
     onlinematches.cpp \
-    pastmatches.cpp
+    pastmatches.cpp \
+    common.cpp
 
 QT += xmlpatterns
 

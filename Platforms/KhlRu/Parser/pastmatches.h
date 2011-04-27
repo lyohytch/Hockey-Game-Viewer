@@ -13,12 +13,8 @@ public:
     }
     virtual void run();
 protected:
-    QString savedFilename;
-
-    QString parsedFilename;
-    QString parsedDir;
-
-    void setFilenameForParsing();
+    virtual void setFilenameForParsing();
+    virtual void finishTask();
 };
 
 #endif // PARSEGAMINGMONTH_H
