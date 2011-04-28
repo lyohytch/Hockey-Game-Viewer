@@ -7,13 +7,87 @@
 #include "constants.h"
 #include "constants_presenter.h"
 
-
-GameViewerSettings::GameViewerSettings(QWidget *parent) : IViewSettings(parent)
+void BasicViewerSettings::loadSavedSettings()
 {
-    //TODO: setup tab widget
-    this->setWindowTitle(tr("Preferences"));
-    //this->setGeometry(500, 500, 300, 300);
-    //Creatings tabs
+    qDebug();
+    QSettings settings(appINI, QSettings::IniFormat);
+    foreach(QString key, settings.allKeys())
+    {
+        qDebug() << "KEY" << ":" << key;
+        if (existedPropertyNames().contains(key))
+        {
+            qDebug() << "VALUE" << ":" << settings.value(key, QVariant());
+            setPropertyByString(key, settings.value(key, QVariant()));
+        }
+    }
+}
+
+void BasicViewerSettings::checkChangedSettings()
+{
+    // Настройки применяются после закрытия окна
+    qDebug();
+    QSettings settings(appINI, QSettings::IniFormat);
+    foreach(QString key, changedPropertyNames())
+    {
+        qDebug() << "Changed key" << ":" << key;
+        if (existedPropertyNames().contains(key))
+        {
+            setPropertyByString(key, settings.value(key, QVariant()));
+        }
+    }
+    if (changedPropertyNames().count() > 0)
+    {
+        emit ProxySettingsChanged();
+    }
+}
+
+void BasicViewerSettings::onePropertyChanged(const QString& prop, const QVariant& value)
+{
+    qDebug();
+    QSettings settings(appINI, QSettings::IniFormat);
+    settings.setValue(prop, value);
+    propertyChanged(prop);
+}
+
+
+GameViewerSettings::GameViewerSettings(QWidget* parent) : QWidget(parent)
+{
+    createProxyScreen();
+    createTBDScreen();
+
+    setupMainWidget();
+
+    viewerSettings = new BasicViewerSettings(this);
+
+}
+
+void GameViewerSettings::createTBDScreen()
+{
+    TBD = new QWidget;
+}
+
+void GameViewerSettings::setupMainWidget()
+{
+    setWindowTitle(tr("Preferences"));
+
+    tabs = new QTabWidget;
+    tabs->addTab(proxy, tr("Setup proxy"));
+    tabs->addTab(TBD, "TBD");
+
+    layout = new QVBoxLayout(this);
+    layout->addWidget(tabs);
+    setLayout(layout);
+}
+
+void GameViewerSettings::createProxyScreen()
+{
+    ProxyScreenCreateElements();
+    ProxyScreenRegisteringEventsFromElements();
+    ProxyScreenSetupLayout();
+}
+
+void GameViewerSettings::ProxyScreenCreateElements()
+{
     proxy = new QWidget;
     proxy_layout = new QGridLayout(proxy);
     proxy_layout->setSizeConstraint(QGridLayout::SetMinimumSize);
@@ -25,29 +99,32 @@ GameViewerSettings::GameViewerSettings(QWidget *parent) : IViewSettings(parent)
     proxy_pwd_txt = new QLabel(tr("Password"));
     //Editors
     proxy_type = new QComboBox;
-
     proxy_type->addItem(tr("Default system proxy"), Qt::UserRole + 1);
     proxy_type->addItem(tr("Socks proxy"), Qt::UserRole + 1);
     proxy_type->addItem(tr("No proxy"), Qt::UserRole + 1);
     proxy_type->addItem(tr("HTTP proxy"), Qt::UserRole + 1);
     proxy_type->addItem(tr("Secure HTTP proxy"), Qt::UserRole + 1);
     proxy_type->addItem(tr("FTP proxy"), Qt::UserRole + 1);
+
     proxy_host = new QLineEdit;
     proxy_port = new QSpinBox;
     proxy_port->setMaximum(99999);
     proxy_port->setMinimum(0);
     proxy_user = new QLineEdit;
     proxy_pwd = new QLineEdit;
+}
 
-    //Connect
+void GameViewerSettings::ProxyScreenRegisteringEventsFromElements()
+{
     connect(proxy_type, SIGNAL(currentIndexChanged(int)), this, SLOT(typeProxyChanged(int)));
     connect(proxy_host, SIGNAL(textChanged(QString)), this, SLOT(hostProxyChanged(QString)));
     connect(proxy_port, SIGNAL(valueChanged(int)), this, SLOT(portProxyChanged(int)));
     connect(proxy_user, SIGNAL(textChanged(QString)), this, SLOT(userProxyChanged(QString)));
     connect(proxy_pwd, SIGNAL(textChanged(QString)), this, SLOT(pwdProxyChanged(QString)));
+}
 
-    //
-
+void GameViewerSettings::ProxyScreenSetupLayout()
+{
     proxy_layout->addWidget(proxy_type_txt, 0, 0);
     proxy_layout->addWidget(proxy_host_txt, 1, 0);
     proxy_layout->addWidget(proxy_port_txt, 2, 0);
@@ -59,115 +136,52 @@ GameViewerSettings::GameViewerSettings(QWidget *parent) : IViewSettings(parent)
     proxy_layout->addWidget(proxy_user, 3, 1);
     proxy_layout->addWidget(proxy_pwd, 4, 1);
 
-
-
-
     proxy->setLayout(proxy_layout);
-    QWidget *TBD = new QWidget;
-    //Creating tabWidget
-    tabs = new QTabWidget;
-    //Adding tabs
-    tabs->addTab(proxy, tr("Setup proxy"));
-
-    //tabs->setTabShape(QTabWidget::Triangular);
-
-
-    tabs->addTab(TBD, "TBD");
-    layout = new QVBoxLayout(this);
-    layout->addWidget(tabs);
-    this->setLayout(layout);
-
 }
 
 void GameViewerSettings::typeProxyChanged(int copyType)
 {
-    qDebug();
-    QSettings settings(appINI, QSettings::IniFormat);
-    settings.setValue(TYPE_PROXY, copyType);
-    propertyChanged(TYPE_PROXY);
+    viewerSettings->onePropertyChanged(TYPE_PROXY, copyType);
 }
 
 void GameViewerSettings::hostProxyChanged(QString copyhost)
 {
-    qDebug();
-    QSettings settings(appINI, QSettings::IniFormat);
-    settings.setValue(HOST_PROXY, copyhost);
-    propertyChanged(HOST_PROXY);
+    viewerSettings->onePropertyChanged(HOST_PROXY, copyhost);
 }
 
 void GameViewerSettings::portProxyChanged(int copyport)
 {
-    qDebug();
-    QSettings settings(appINI, QSettings::IniFormat);
-    settings.setValue(PORT_PROXY, copyport);
-    propertyChanged(PORT_PROXY);
+    viewerSettings->onePropertyChanged(PORT_PROXY, copyport);
 }
 
 void GameViewerSettings::userProxyChanged(QString copyuser)
 {
-    qDebug();
-    QSettings settings(appINI, QSettings::IniFormat);
-    settings.setValue(USER_PROXY, copyuser);
-    propertyChanged(USER_PROXY);
+    viewerSettings->onePropertyChanged(USER_PROXY, copyuser);
 }
 
 void GameViewerSettings::pwdProxyChanged(QString copypwd)
 {
-    qDebug();
-    QSettings settings(appINI, QSettings::IniFormat);
-    settings.setValue(PWD_PROXY, copypwd);
-    propertyChanged(PWD_PROXY);
+    viewerSettings->onePropertyChanged(PWD_PROXY, copypwd);
 }
 
-void GameViewerSettings::loadSavedSettings()
+void GameViewerSettings::closeEvent(QCloseEvent*)
 {
-   qDebug();
-   QSettings settings(appINI, QSettings::IniFormat);
-   foreach(QString key, settings.allKeys())
-   {
-       qDebug()<<"KEY"<<":"<<key;
-       if (existedPropertyNames().contains(key))
-       {
-           qDebug()<<"VALUE"<<":"<<settings.value(key, QVariant());
-           setPropertyByString(key, settings.value(key, QVariant()));
-       }
-   }
-
-   proxy_type->setCurrentIndex(typeProxy());
-   proxy_host->setText(hostProxy());
-   proxy_port->setValue(portProxy());
-   proxy_user->setText(userProxy());
-   proxy_pwd->setText(pwdProxy());
-
-}
-
-void GameViewerSettings::saveSettings()
-{
-    qDebug();
-}
-
-void GameViewerSettings::closeEvent(QCloseEvent *)
-{
-    // Настройки применяются после закрытия окна
-    qDebug();
-    QSettings settings(appINI, QSettings::IniFormat);
-    foreach(QString key, changedPropertyNames())
-    {
-        qDebug()<<"Changed key"<<":"<<key;
-        if ( existedPropertyNames().contains(key))
-        {
-            setPropertyByString(key, settings.value(key, QVariant()));
-        }
-    }
-    if ( changedPropertyNames().count() > 0)
-    {
-        emit ProxySettingsChanged();
-    }
+    viewerSettings->checkChangedSettings();
 }
 void GameViewerSettings::show()
 {
-    loadSavedSettings();
-    clearChangedProperties();
-    //TODO: отобразить настройки
+    viewerSettings->loadSavedSettings();
+    setValuesForElements();
+    viewerSettings->clearChangedProperties();
+
     QWidget::show();
+}
+
+void GameViewerSettings::setValuesForElements()
+{
+    proxy_type->setCurrentIndex(viewerSettings->typeProxy());
+    proxy_host->setText(viewerSettings->hostProxy());
+    proxy_port->setValue(viewerSettings->portProxy());
+    proxy_user->setText(viewerSettings->userProxy());
+    proxy_pwd->setText(viewerSettings->pwdProxy());
 }

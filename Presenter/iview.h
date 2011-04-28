@@ -1,12 +1,11 @@
 #ifndef IVIEW_H
 #define IVIEW_H
 
-#include <QMainWindow>
 #include <QTableView>
 #include <QDateEdit>
 #include <QDate>
 
-class IView : public QMainWindow
+class IView : public QObject
 {
         Q_OBJECT
 
@@ -17,7 +16,7 @@ class IView : public QMainWindow
 
         Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY SetStatusOnForm)
     public:
-        IView(QWidget* parent = 0) : QMainWindow(parent) {}
+        IView(QObject* parent = 0) : QObject(parent) {}
         virtual ~IView() {}
         QString downloaderName() const
         {
@@ -38,6 +37,8 @@ class IView : public QMainWindow
         {
             return _status;
         }
+
+        virtual void gamingDaySelected(const QDate & gameDate) = 0;
 
     signals:
         void GamingDaySelected(const QDate& gameDate);
@@ -72,5 +73,4 @@ class IView : public QMainWindow
 
         QString _status;
 };
-
 #endif // IVIEW_H

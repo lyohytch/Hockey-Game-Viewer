@@ -8,19 +8,39 @@
 #include <QLabel>
 
 #include "IViewSettings.h"
-class GameViewerSettings: public IViewSettings
+
+class BasicViewerSettings: public IViewSettings
+{
+    Q_OBJECT
+public:
+    BasicViewerSettings(QObject *parent = 0): IViewSettings(parent) {}
+    virtual ~BasicViewerSettings(){}
+    virtual void loadSavedSettings();
+    virtual void checkChangedSettings();
+    virtual void onePropertyChanged(const QString &prop, const QVariant & value);
+};
+
+class GameViewerSettings: public QWidget
 {
     Q_OBJECT
 public:
     GameViewerSettings(QWidget *parent = 0);
     ~GameViewerSettings() {}
-    virtual void loadSavedSettings();
-    virtual void saveSettings();
     void closeEvent(QCloseEvent *);
+    BasicViewerSettings * getBasicViewerSettings()
+    {
+        return viewerSettings;
+    }
+
 public slots:
         void show();
     private:
+        BasicViewerSettings *viewerSettings;
+        //Screens
         QWidget *proxy;
+        QWidget *TBD;
+
+        //Proxy-Screen
         QGridLayout *proxy_layout;
         //Labels
         QLabel * proxy_type_txt;
@@ -35,8 +55,20 @@ public slots:
         QLineEdit *proxy_user;
         QLineEdit *proxy_pwd;
 
+        //Main
         QTabWidget *tabs;
         QLayout *layout;
+
+        void setupMainWidget();
+        void setValuesForElements();
+         //Create Screens
+        void createProxyScreen();
+        void createTBDScreen();
+
+        //Additional setup for screens
+        void ProxyScreenCreateElements();
+        void ProxyScreenRegisteringEventsFromElements();
+        void ProxyScreenSetupLayout();
     private slots:
         void typeProxyChanged(int);
         void hostProxyChanged(QString);

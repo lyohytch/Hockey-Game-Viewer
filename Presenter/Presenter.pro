@@ -10,6 +10,7 @@ HEADERS += \
 SOURCES += \
     presentation.cpp \
     qthreadrunner.cpp \
-    qthreadrunnerpool.cpp
+    qthreadrunnerpool.cpp \
+    IViewSettings.cpp
 
 include ( ../presenter.pri )

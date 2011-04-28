@@ -2,13 +2,19 @@
 #include "ui_gameviewer.h"
 #include "constants.h"
 
-GameViewer::GameViewer(QWidget *parent) :
-    IView(parent),
+
+void BasicViewer::gamingDaySelected(const QDate &gameDate)
+{
+    emit GamingDaySelected(gameDate);
+}
+
+GameViewer::GameViewer(QWidget *parent):
+    QMainWindow(parent),
     ui(new Ui::GameViewer)
 {
     ui->setupUi(this);
     init();
-    new presentation(this, viewerSettings);
+    new presentation(view, viewerSettings);
 }
 
 GameViewer::~GameViewer()
@@ -19,32 +25,37 @@ GameViewer::~GameViewer()
 void GameViewer::DateChanged(const QDate &date)
 {
     qDebug()<<"New date"<<":"<<date;
-    emit GamingDaySelected(date);
+    emit  view->gamingDaySelected(date);
 }
 void GameViewer::init()
 {
      QVBoxLayout *vlayout = new QVBoxLayout();
-     setCalendar(new QDateEdit(this));
-     calendar()->setCalendarPopup(true);
-     calendar()->setDate(QDate::currentDate());
+
+     view = new BasicViewer(this);
+     view->setCalendar(new QDateEdit(this));
+     view->calendar()->setCalendarPopup(true);
+     view->calendar()->setDate(QDate::currentDate());
      qDebug();
-     setTable(new QTableView(this));
-     connect(calendar(), SIGNAL(dateChanged(const QDate&)), this, SLOT(DateChanged(const QDate&)), Qt::DirectConnection);
+     view->setTable(new QTableView(this));
+     connect(view->calendar(), SIGNAL(dateChanged(const QDate&)), this, SLOT(DateChanged(const QDate&)), Qt::DirectConnection);
      qDebug();
-     vlayout->addWidget(calendar());
-     vlayout->addWidget(table());
+     vlayout->addWidget(view->calendar());
+     vlayout->addWidget(view->table());
      centralWidget()->setLayout(vlayout);
 
      stateLabel = new QLabel();
      statusBar()->addWidget(stateLabel);
 
-     connect(this, SIGNAL(SetStatusOnForm(const QString&)), this, SLOT(setStatusOnForm(const QString&)), Qt::UniqueConnection);
 
-     setStatus(tr("Select day"));
 
-     viewerSettings = new GameViewerSettings();
+     connect(view, SIGNAL(SetStatusOnForm(const QString&)), this, SLOT(setStatusOnForm(const QString&)), Qt::UniqueConnection);
+
+     view->setStatus(tr("Select day"));
+
+     viewerSettingsForm = new GameViewerSettings();
+     viewerSettings = viewerSettingsForm->getBasicViewerSettings();
      viewerSettings->prepareSettings();
-     connect(ui->action_Preferences, SIGNAL(triggered()),viewerSettings, SLOT(show()), Qt::UniqueConnection);
+     connect(ui->action_Preferences, SIGNAL(triggered()),viewerSettingsForm, SLOT(show()), Qt::UniqueConnection);
 }
 
 void GameViewer::setStatusOnForm(const QString &status)
