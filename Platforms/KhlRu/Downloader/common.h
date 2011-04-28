@@ -7,6 +7,17 @@
 
 #include "idownloader.h"
 
+class KhlRuReceiver : public IReceiver
+{
+        Q_OBJECT
+    public:
+        KhlRuReceiver(QNetworkAccessManager* _mgr, QFile* _file, const QString &urlForDownload);
+    public slots:
+        virtual void httpFinished();
+        virtual void httpReadyRead();
+
+};
+
 class DownloaderKhlRu : public IDownloader
 {
         Q_OBJECT
@@ -15,6 +26,7 @@ class DownloaderKhlRu : public IDownloader
         {
         }
         virtual ~DownloaderKhlRu() {}
+        void executeDownloadingProcess();
     protected:
 
 

@@ -3,17 +3,6 @@
 
 #include "common.h"
 
-class KhlRuGamingDayReceiver : public IReceiver
-{
-        Q_OBJECT
-    public:
-        KhlRuGamingDayReceiver(QNetworkAccessManager* _mgr, QFile* _file, const QString &urlForDownload);
-    public slots:
-        virtual void httpFinished();
-        virtual void httpReadyRead();
-
-};
-
 class DownKhlRuGamingDay : public DownloaderKhlRu
 {
     Q_OBJECT

@@ -6,11 +6,7 @@
 //Downloader
 void DownKhlRuGamingDay::run()
 {
-    // TODO: move to parent
-    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    // TODO: запускать процесс только в случае отсутствия или старого файла
-    setupUrlAndFileByDate();
-    launchDownloadingProcess();
+    executeDownloadingProcess();
 }
 
 void DownKhlRuGamingDay::setupUrlAndFileByDate()
@@ -37,7 +33,7 @@ void DownKhlRuGamingDay::launchDownloadingProcess()
 
     QNetworkAccessManager *mgr = new QNetworkAccessManager();
 
-    KhlRuGamingDayReceiver* receiver = new KhlRuGamingDayReceiver(mgr,&file, urlForDownload);
+    KhlRuReceiver* receiver = new KhlRuReceiver(mgr,&file, urlForDownload);
 
     qDebug()<<"1:"<<connect(receiver, SIGNAL(finished(int)), this, SIGNAL(fetchedGamingDay(int)), Qt::QueuedConnection);
     qDebug()<<"2:"<<connect(receiver, SIGNAL(finished(int)), this, SLOT(finishDownload(int)), Qt::QueuedConnection);
@@ -53,56 +49,3 @@ void DownKhlRuGamingDay::finishDownload(int error)
     }
 }
 
-//HTTP reciever
-KhlRuGamingDayReceiver::KhlRuGamingDayReceiver(QNetworkAccessManager *_mgr, QFile *_file, const QString &urlForDownload):
-        IReceiver(_mgr, _file)
-{
-    reply = mgr->get(QNetworkRequest(QUrl(urlForDownload)));
-
-    qDebug()<<"3:"<<connect(reply, SIGNAL(finished()), this, SLOT(httpFinished()), Qt::DirectConnection);
-    qDebug()<<"4:"<<connect(reply, SIGNAL(readyRead()), this, SLOT(httpReadyRead()), Qt::DirectConnection);
-}
-
-void KhlRuGamingDayReceiver::httpFinished()
-{
-    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-    QNetworkReply::NetworkError err;
-    if (err = reply->error())
-    {
-        qDebug() << reply->errorString();
-    }
-    else if (!redirectionTarget.isNull())
-    {
-        qDebug() << "Redirection";
-        return;
-    }
-    else
-    {
-        qDebug() << "Downloaded url";
-    }
-
-    reply->deleteLater();
-
-    mgr->deleteLater();
-
-    file->close();
-    this->deleteLater();
-
-    emit finished(err);
-}
-
-void KhlRuGamingDayReceiver::httpReadyRead()
-{
-    qDebug() << QTime::currentTime() << ":" << QThread::currentThreadId();
-    if ( file && !file->isOpen() )
-    {
-        qDebug()<<"Open file for save data";
-        file->open(QIODevice::WriteOnly);
-    }
-    if (file)
-    {
-        qDebug() << "Write into file";
-        file->write(reply->readAll());
-    }
-}

@@ -7,7 +7,8 @@ HEADERS += \
 
 SOURCES += \
     onlinematches.cpp \
-    pastmatches.cpp
+    pastmatches.cpp \
+    common.cpp
 
 LIBS += -L../../../build/bin -loperations
 
