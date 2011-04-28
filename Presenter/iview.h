@@ -1,20 +1,15 @@
 #ifndef IVIEW_H
 #define IVIEW_H
 
-#include <QTableView>
-#include <QDateEdit>
+#include <QAbstractItemModel>
 #include <QDate>
 
 class IView : public QObject
 {
         Q_OBJECT
 
-        Q_PROPERTY(QString downloaderName READ downloaderName WRITE setdownloaderName)
-
-        Q_PROPERTY(QTableView *table READ table WRITE setTable)
-        Q_PROPERTY(QDateEdit *calendar READ calendar WRITE setCalendar)
-
         Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY SetStatusOnForm)
+        Q_PROPERTY(QDate selectedDay READ selectedDay WRITE setSelectedDay)
     public:
         IView(QObject* parent = 0) : QObject(parent) {}
         virtual ~IView() {}
@@ -23,23 +18,18 @@ class IView : public QObject
             return _downloaderName;
         }
 
-        QTableView *table() const
-        {
-            return _table;
-        }
-
-        QDateEdit *calendar() const
-        {
-            return _calendar;
-        }
-
         QString status() const
         {
             return _status;
         }
 
+        QDate selectedDay() const
+        {
+            return _selectedDay;
+        }
         virtual void gamingDaySelected(const QDate & gameDate) = 0;
-
+        virtual void setModel(QAbstractItemModel *model) = 0;
+        virtual void resizeTable() = 0;
     signals:
         void GamingDaySelected(const QDate& gameDate);
         void SetStatusOnForm(const QString &status);
@@ -49,28 +39,20 @@ class IView : public QObject
             _downloaderName = copySite;
         }
 
-
-        void setTable(QTableView *copyTable)
-        {
-            _table = copyTable;
-        }
-        void setCalendar(QDateEdit *copyCalendar)
-        {
-            _calendar = copyCalendar;
-        }
-
         void setStatus(const QString &copyStatus)
         {
             _status = copyStatus;
             emit SetStatusOnForm(_status);
         }
 
+        void setSelectedDay(const QDate &copydate)
+        {
+            _selectedDay = copydate;
+        }
+
     private:
         QString _downloaderName;
-
-        QTableView *_table;
-        QDateEdit *_calendar;
-
         QString _status;
+        QDate _selectedDay;
 };
 #endif // IVIEW_H

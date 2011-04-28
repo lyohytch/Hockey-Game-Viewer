@@ -2,6 +2,8 @@
 #define GAMEVIEWER_H
 #include <QLabel>
 #include <QMainWindow>
+#include <QTableView>
+#include <QDateEdit>
 
 #include "iview.h"
 #include "presentation.h"
@@ -16,9 +18,36 @@ class BasicViewer: public IView
 {
     Q_OBJECT
 public:
-    BasicViewer(QObject *parent = 0): IView(parent){}
-    virtual ~BasicViewer() {}
+    BasicViewer(QObject *parent = 0): IView(parent)
+    {
+        _table = new QTableView(0);
+        _calendar = new QDateEdit(0);
+        _stateLabel = new QLabel(0);
+    }
+    virtual ~BasicViewer()
+    {
+    }
     virtual void gamingDaySelected(const QDate & gameDate);
+    virtual void setModel(QAbstractItemModel *model);
+    virtual void resizeTable();
+    QTableView *table() const
+    {
+        return _table;
+    }
+    QDateEdit *calendar()
+    {
+        return _calendar;
+    }
+
+    QLabel *stateLabel()
+    {
+        return _stateLabel;
+    }
+
+private:
+    QTableView *_table;
+    QDateEdit *_calendar;
+    QLabel *_stateLabel;
 };
 
 class GameViewer : public QMainWindow
@@ -40,7 +69,7 @@ class GameViewer : public QMainWindow
         BasicViewer *view;
         BasicViewerSettings *viewerSettings;
         Ui::GameViewer* ui;
-        QLabel *stateLabel;
+
         GameViewerSettings *viewerSettingsForm;
         void init();
 

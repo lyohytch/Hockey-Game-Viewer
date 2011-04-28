@@ -30,7 +30,7 @@ class IViewSettings: public QObject
             unknown
         };
 
-        IViewSettings(QObject* parent);
+        IViewSettings(QObject* parent = 0);
 
         int typeProxy() const
         {

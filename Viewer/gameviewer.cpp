@@ -8,6 +8,20 @@ void BasicViewer::gamingDaySelected(const QDate &gameDate)
     emit GamingDaySelected(gameDate);
 }
 
+void BasicViewer::setModel(QAbstractItemModel *model)
+{
+    Q_ASSERT(model != 0);
+    _table->setModel(model);
+}
+
+void BasicViewer::resizeTable()
+{
+    _table->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);;
+    _table->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+    _table->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
+    _table->horizontalHeader()->setResizeMode(3, QHeaderView::Stretch);
+}
+
 GameViewer::GameViewer(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::GameViewer)
@@ -32,19 +46,16 @@ void GameViewer::init()
      QVBoxLayout *vlayout = new QVBoxLayout();
 
      view = new BasicViewer(this);
-     view->setCalendar(new QDateEdit(this));
      view->calendar()->setCalendarPopup(true);
      view->calendar()->setDate(QDate::currentDate());
      qDebug();
-     view->setTable(new QTableView(this));
      connect(view->calendar(), SIGNAL(dateChanged(const QDate&)), this, SLOT(DateChanged(const QDate&)), Qt::DirectConnection);
      qDebug();
      vlayout->addWidget(view->calendar());
      vlayout->addWidget(view->table());
      centralWidget()->setLayout(vlayout);
 
-     stateLabel = new QLabel();
-     statusBar()->addWidget(stateLabel);
+     statusBar()->addWidget(view->stateLabel());
 
 
 
@@ -61,5 +72,5 @@ void GameViewer::init()
 void GameViewer::setStatusOnForm(const QString &status)
 {
     qDebug()<<"Status changed to "<<status;
-    stateLabel->setText(status);
+    view->stateLabel()->setText(status);
 }

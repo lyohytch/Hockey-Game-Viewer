@@ -1,5 +1,4 @@
 #include <QDir>
-#include <QHeaderView>
 #include <QtNetwork/QNetworkReply>
 
 #include "constants.h"
@@ -20,7 +19,7 @@
 //Runner
 #include "qthreadrunner.h"
 
-
+//TODO: выкинуть QtGui из интерфейсов
 //TODO: разбить по модулям, имена файлов = имена классов
 //TODO: компрессия временных данных?
 //TODO: файлы должны писаться только одним объектом, а читаться могут несколькими
@@ -40,7 +39,7 @@ presentation::presentation(IView* _view, IViewSettings * _viewSettings)
 
     tableModel = new QStandardItemModel(this);
 
-    view->table()->setModel(tableModel);
+    view->setModel(tableModel);
 
     createDownloadersList();
     createParsersList();
@@ -99,8 +98,8 @@ void presentation::downloadDayResultsFinished(int err)
     if (err == QNetworkReply::NoError)
     {
         qDebug()<<"Current day information downloaded. Start parser";
-        view->setStatus(tr("Parsing downloaded matches info for current day : ") + selectedDay.toString("dd.MM.yy"));
-        parsers->getOperationByName("www.khl.ru-day")->setDate(selectedDay);
+        view->setStatus(tr("Parsing downloaded matches info for current day : ") + view->selectedDay().toString("dd.MM.yy"));
+        parsers->getOperationByName("www.khl.ru-day")->setDate(view->selectedDay());
         runners->startRunnerByName("www.khl.ru-parser-day");
     }
     else
@@ -112,7 +111,7 @@ void presentation::downloadDayResultsFinished(int err)
 void presentation::fillMatchesTodayTable()
 {
     qDebug()<<"Reading complete";
-    bool mayShowResults = readers->getOperationByName("www.khl.ru-day")->date() == selectedDay;
+    bool mayShowResults = readers->getOperationByName("www.khl.ru-day")->date() == view->selectedDay();
     //filtering by date
     if (mayShowResults)
     {
@@ -151,11 +150,7 @@ void presentation::fillMatchesTodayTable()
 
             tableModel->appendRow(row);
         }
-        view->table()->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);;
-        view->table()->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-        view->table()->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
-        view->table()->horizontalHeader()->setResizeMode(3, QHeaderView::Stretch);
-
+        view->resizeTable();
     }
     else
     {
@@ -168,12 +163,12 @@ void presentation::fillMatchesTable()
 {
     qDebug() << "View match info";
 
-    bool mayShowResults = readers->getOperationByName("www.khl.ru")->date() == selectedDay;
+    bool mayShowResults = readers->getOperationByName("www.khl.ru")->date() == view->selectedDay();
 
     //Filtering by date
     if (mayShowResults)
     {
-        view->setStatus(QString(tr("Matches for ") + selectedDay.toString("dd.MM.yy")));
+        view->setStatus(QString(tr("Matches for ") + view->selectedDay().toString("dd.MM.yy")));
         qDebug() << view->status();
         tableModel->clear();
         tableModel->setHorizontalHeaderLabels(QStringList() << tr("Home") << tr("Away") << tr("Count") << tr("State"));
@@ -210,10 +205,7 @@ void presentation::fillMatchesTable()
 
             tableModel->appendRow(row);
         }
-        view->table()->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);;
-        view->table()->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-        view->table()->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
-        view->table()->horizontalHeader()->setResizeMode(3, QHeaderView::Stretch);
+        view->resizeTable();
     }
 
 }
@@ -222,28 +214,28 @@ void presentation::EmptyReadingFile()
 {
     qDebug() << "Sorry, empty reading file";
     //TODO: create question
-    view->setStatus(tr("Downloading matches info for ") + selectedDay.toString("dd.MM.yy"));
-    downloaders->getOperationByName("www.khl.ru")->setDate(selectedDay);
+    view->setStatus(tr("Downloading matches info for ") + view->selectedDay().toString("dd.MM.yy"));
+    downloaders->getOperationByName("www.khl.ru")->setDate(view->selectedDay());
     runners->startRunnerByName("www.khl.ru-downloader");
 }
 
 void presentation::gamingDaySelected(const QDate& gameDay)
 {
     qDebug() << gameDay;
-    selectedDay = gameDay;
+    view->setSelectedDay(gameDay);
     if ( gameDay != QDate::currentDate() )
     {
         qDebug()<<"Loading past information";
         qDebug()<<"Stopping update for current dat";
         runners->getRunner("www.khl.ru-downloader-day")->stopExec();
-        readers->getOperationByName("www.khl.ru")->setDate(selectedDay);
+        readers->getOperationByName("www.khl.ru")->setDate(view->selectedDay());
         runners->startRunnerByName("www.khl.ru-reader");
     }
     else
     {
         qDebug()<<"Loading current info";
-        view->setStatus(tr("Downloading match info for current day ") + selectedDay.toString("dd.MM.yy"));
-        downloaders->getOperationByName("www.khl.ru-day")->setDate(selectedDay);
+        view->setStatus(tr("Downloading match info for current day ") + view->selectedDay().toString("dd.MM.yy"));
+        downloaders->getOperationByName("www.khl.ru-day")->setDate(view->selectedDay());
         runners->startRunnerByName("www.khl.ru-downloader-day");
     }
 }
@@ -253,8 +245,8 @@ void presentation::downloadMonthResultsFinished(int error)
     if (error == QNetworkReply::NoError)
     {
         qDebug() << "Download successfully finished. Start parsing";
-        view->setStatus(tr("Parsing downloaded matches info for ") + selectedDay.toString("dd.MM.yy"));
-        parsers->getOperationByName("www.khl.ru")->setDate(selectedDay);
+        view->setStatus(tr("Parsing downloaded matches info for ") + view->selectedDay().toString("dd.MM.yy"));
+        parsers->getOperationByName("www.khl.ru")->setDate(view->selectedDay());
         runners->startRunnerByName("www.khl.ru-parser");
     }
     else
@@ -266,14 +258,14 @@ void presentation::downloadMonthResultsFinished(int error)
 void presentation::parsingMonthFinished()
 {
     qDebug() << "Parsing successfully finished. Start reading.";
-    readers->getOperationByName("www.khl.ru")->setDate(selectedDay);
+    readers->getOperationByName("www.khl.ru")->setDate(view->selectedDay());
     runners->startRunnerByName("www.khl.ru-reader");
 }
 
 void presentation::parsingDayFinished()
 {
      qDebug() << "Parsing successfully finished. Start reading.";
-     readers->getOperationByName("www.khl.ru-day")->setDate(selectedDay);
+     readers->getOperationByName("www.khl.ru-day")->setDate(view->selectedDay());
      runners->startRunnerByName("www.khl.ru-reader-day");
 }
 

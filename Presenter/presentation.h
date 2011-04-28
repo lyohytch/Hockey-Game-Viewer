@@ -1,15 +1,6 @@
 #ifndef PRESENTATION_H
 #define PRESENTATION_H
-#include <QObject>
-#include <QtNetwork/QNetworkProxy>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
-#include <QUrl>
-#include <QFile>
 #include <QStandardItemModel>
-#include <QTableView>
-#include <QVBoxLayout>
 
 #include "iview.h"
 #include "IViewSettings.h"
@@ -40,9 +31,6 @@ private:
     OperationPool *parsers;
     OperationPool *readers;
     QThreadRunnerPool *runners;
-
-    QDate selectedDay;
-
     QStandardItemModel *tableModel;
 
     void createDownloadersList();

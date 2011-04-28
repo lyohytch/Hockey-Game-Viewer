@@ -1,6 +1,6 @@
 #include "IViewSettings.h"
 
-IViewSettings::IViewSettings(QObject *parent = 0): QObject(parent)
+IViewSettings::IViewSettings(QObject *parent): QObject(parent)
 {
     _typeProxy = 0;
     _hostProxy = QString();
