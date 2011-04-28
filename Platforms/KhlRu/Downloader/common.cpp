@@ -1,4 +1,5 @@
 #include "common.h"
+#include "constants.h"
 //HTTP reciever
 KhlRuReceiver::KhlRuReceiver(QNetworkAccessManager *_mgr, QFile *_file, const QString &urlForDownload):
         IReceiver(_mgr, _file)

@@ -39,10 +39,7 @@ LIBS += -L../build/bin -lpresenter -lparser -ldownloader -loperations -lreader
 RESOURCES += ../resources.qrc
 
 ## CONFIG settings(debug)
-CONFIG += debug
-CONFIG -= release
-DEFINES += DEBUGING
-DEFINES += PROS
+CONFIG(release, debug|release): DEFINES += QT_NO_DEBUG QT_NO_DEBUG_OUTPUT QT_NO_WARNING_OUTPUT
 
 ## CONFIG settings (release)
 #CONFIG += release
