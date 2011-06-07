@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTableView>
 #include <QDateEdit>
+#include <QPushButton>
 
 #include "iview.h"
 #include "presentation.h"
@@ -23,6 +24,7 @@ public:
         _table = new QTableView(0);
         _calendar = new QDateEdit(0);
         _stateLabel = new QLabel(0);
+        _update = new QPushButton(0);
     }
     virtual ~BasicViewer()
     {
@@ -44,10 +46,16 @@ public:
         return _stateLabel;
     }
 
+    QPushButton *update()
+    {
+        return _update;
+    }
+
 private:
     QTableView *_table;
     QDateEdit *_calendar;
     QLabel *_stateLabel;
+    QPushButton *_update;
 };
 
 class GameViewer : public QMainWindow
@@ -75,6 +83,7 @@ class GameViewer : public QMainWindow
 
     private slots:
         void DateChanged(const QDate &date);
+        void Update();
 };
 
 

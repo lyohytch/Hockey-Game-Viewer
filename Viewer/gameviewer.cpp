@@ -44,14 +44,18 @@ void GameViewer::DateChanged(const QDate &date)
 void GameViewer::init()
 {
      QVBoxLayout *vlayout = new QVBoxLayout();
+     QHBoxLayout *hlayout = new QHBoxLayout();
 
      view = new BasicViewer(this);
      view->calendar()->setCalendarPopup(true);
      view->calendar()->setDate(QDate::currentDate());
      qDebug();
      connect(view->calendar(), SIGNAL(dateChanged(const QDate&)), this, SLOT(DateChanged(const QDate&)), Qt::DirectConnection);
+     connect(view->update(), SIGNAL(clicked()), this, SLOT(Update()), Qt::DirectConnection);
      qDebug();
-     vlayout->addWidget(view->calendar());
+     hlayout->addWidget(view->calendar(),1);//Stretch calendar widget
+     hlayout->addWidget(view->update());
+     vlayout->addItem(hlayout);
      vlayout->addWidget(view->table());
      centralWidget()->setLayout(vlayout);
 
@@ -67,6 +71,12 @@ void GameViewer::init()
      viewerSettings = viewerSettingsForm->getBasicViewerSettings();
      viewerSettings->prepareSettings();
      connect(ui->action_Preferences, SIGNAL(triggered()),viewerSettingsForm, SLOT(show()), Qt::UniqueConnection);
+}
+
+void GameViewer::Update()
+{
+    qDebug()<<"Update button is pressed";
+    emit view->gamingDaySelected(view->calendar()->date());
 }
 
 void GameViewer::setStatusOnForm(const QString &status)
