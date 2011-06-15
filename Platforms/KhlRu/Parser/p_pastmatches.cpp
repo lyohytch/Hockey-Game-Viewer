@@ -1,7 +1,7 @@
 #include <QDir>
 #include <QBuffer>
 
-#include "pastmatches.h"
+#include "p_pastmatches.h"
 #include "constants_downloader.h"
 //#include "gamingday.h"
 //TODO: можно объединить реализации для онлайн и прошлых матчей

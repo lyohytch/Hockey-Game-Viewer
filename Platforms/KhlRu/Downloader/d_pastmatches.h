@@ -1,7 +1,7 @@
 #ifndef DOWNLOADERGAMINGMONTH_H
 #define DOWNLOADERGAMINGMONTH_H
 
-#include "common.h"
+#include "d_common.h"
 
 class DownKhlRuGamingMonth : public DownloaderKhlRu
 {

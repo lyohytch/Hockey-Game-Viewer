@@ -5,12 +5,12 @@
 
 #include "constants.h"
 #include "constants_downloader.h"
-#include "onlinematches.h"
-
-/*TODO: 1. Много времени до начала матча
+#include "r_onlinematches.h"
+//+ - реализовано, ++ - проверено
+/*TODO: +1. Много времени до начала матча
           - Полей chet и chetmore расширенный нет
           - есть поле begin с некоторой инфой о матче
-        2. Около 2 часов и менее до начала матча
+        +2. Около 2 часов и менее до начала матча
           - Нет поля begin
           - Поля chet и chetmore есть
           - chet - показан статус ("Подготовка")

@@ -1,7 +1,7 @@
 #ifndef PARSEGAMINGMONTH_H
 #define PARSEGAMINGMONTH_H
 
-#include "common.h"
+#include "p_common.h"
 
 class ParseKhlRuGamingMonth : public ParserKhlRu
 {

@@ -2,7 +2,7 @@
 #include <QDate>
 
 #include "constants.h"
-#include "pastmatches.h"
+#include "d_pastmatches.h"
 
 //Downloader
 void DownKhlRuGamingMonth::run()

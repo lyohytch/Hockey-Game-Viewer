@@ -5,16 +5,16 @@
 
 #include "presentation.h"
 //Downloaders
-#include "Platforms/KhlRu/Downloader/pastmatches.h"
-#include "Platforms/KhlRu/Downloader/onlinematches.h"
+#include "Platforms/KhlRu/Downloader/d_pastmatches.h"
+#include "Platforms/KhlRu/Downloader/d_onlinematches.h"
 
 //Parsers
-#include "Platforms/KhlRu/Parser/pastmatches.h"
-#include "Platforms/KhlRu/Parser/onlinematches.h"
+#include "Platforms/KhlRu/Parser/p_pastmatches.h"
+#include "Platforms/KhlRu/Parser/p_onlinematches.h"
 
 //Readers
-#include "Platforms/KhlRu/Reader/pastmatches.h"
-#include "Platforms/KhlRu/Reader/onlinematches.h"
+#include "Platforms/KhlRu/Reader/r_pastmatches.h"
+#include "Platforms/KhlRu/Reader/r_onlinematches.h"
 
 //Runner
 #include "qthreadrunner.h"

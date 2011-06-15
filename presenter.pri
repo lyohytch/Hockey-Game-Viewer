@@ -28,4 +28,4 @@ CONFIG(release, debug|release): DEFINES += QT_NO_DEBUG QT_NO_DEBUG_OUTPUT QT_NO_
 #CONFIG -= debug
 #DEFINES += QT_NO_DEBUG QT_NO_DEBUG_OUTPUT QT_NO_WARNING_OUTPUT
 
-LIBS += -L../build/bin -lparser -ldownloader -loperations -lreader
+LIBS += -L../build/bin -lkhlru -loperations

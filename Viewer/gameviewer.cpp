@@ -52,14 +52,17 @@ void GameViewer::init()
      qDebug();
      connect(view->calendar(), SIGNAL(dateChanged(const QDate&)), this, SLOT(DateChanged(const QDate&)), Qt::DirectConnection);
      connect(view->update(), SIGNAL(clicked()), this, SLOT(Update()), Qt::DirectConnection);
-     qDebug();
+
+      qDebug();
      hlayout->addWidget(view->calendar(),1);//Stretch calendar widget
      hlayout->addWidget(view->update());
      vlayout->addItem(hlayout);
      vlayout->addWidget(view->table());
      centralWidget()->setLayout(vlayout);
 
+     statusBar()->addWidget(view->timeupdate());
      statusBar()->addWidget(view->stateLabel());
+
 
 
 

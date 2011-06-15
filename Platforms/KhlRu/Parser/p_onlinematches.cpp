@@ -1,7 +1,7 @@
 #include <QFile>
 #include <QDir>
 
-#include "onlinematches.h"
+#include "p_onlinematches.h"
 #include "constants_downloader.h"
 
 void ParserKhlRuGamingDay::run()

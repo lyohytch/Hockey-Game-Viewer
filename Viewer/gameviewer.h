@@ -5,6 +5,7 @@
 #include <QTableView>
 #include <QDateEdit>
 #include <QPushButton>
+#include <QTimer>
 
 #include "iview.h"
 #include "presentation.h"
@@ -25,6 +26,11 @@ public:
         _calendar = new QDateEdit(0);
         _stateLabel = new QLabel(0);
         _update = new QPushButton(0);
+        _timeupdate = new QLabel(0);
+
+        QTimer *timer = new QTimer(this);
+        connect (timer, SIGNAL(timeout()), this, SLOT(updateTime()) );
+        timer->start(1000);
     }
     virtual ~BasicViewer()
     {
@@ -51,11 +57,22 @@ public:
         return _update;
     }
 
+    QLabel *timeupdate()
+    {
+        return _timeupdate;
+    }
+public slots:
+    void updateTime()
+    {
+        _timeupdate->setText(QDateTime::currentDateTime().toString());
+    }
+
 private:
     QTableView *_table;
     QDateEdit *_calendar;
     QLabel *_stateLabel;
     QPushButton *_update;
+    QLabel *_timeupdate;
 };
 
 class GameViewer : public QMainWindow

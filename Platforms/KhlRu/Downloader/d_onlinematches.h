@@ -1,7 +1,7 @@
 #ifndef DOWNLOADERKHLRUGAMINGDAY_H
 #define DOWNLOADERKHLRUGAMINGDAY_H
 
-#include "common.h"
+#include "d_common.h"
 
 class DownKhlRuGamingDay : public DownloaderKhlRu
 {

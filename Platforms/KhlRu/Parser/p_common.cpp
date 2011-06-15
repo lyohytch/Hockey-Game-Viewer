@@ -2,7 +2,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 #include <QtXmlPatterns/QXmlFormatter>
 
-#include "common.h"
+#include "p_common.h"
 #include "constants.h"
 
 void ParserKhlRu::parseDownloadedFile(const QString& parseFPath)

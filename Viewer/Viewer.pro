@@ -34,7 +34,7 @@ MOC_DIR = ../build/mocs/$$TARGET
 OBJECTS_DIR = ../build/objs/$$TARGET
 
 QT += xmlpatterns
-LIBS += -L../build/bin -lpresenter -lparser -ldownloader -loperations -lreader
+LIBS += -L../build/bin -lpresenter -lkhlru -loperations
 
 RESOURCES += ../resources.qrc
 
